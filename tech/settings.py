@@ -29,7 +29,7 @@ SECRET_KEY = ')brx##30=up6zlagvyy_wg64b=ws4y1a$7f7mu5juprp_@anx='
 DEBUG = False if os.environ.get('DEBUG') else True
 PROD = not DEBUG
 
-ALLOWED_HOSTS = ['admin.tech.az', '3.128.254.130']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -133,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'az'
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = Tru
 
 TIME_ZONE = 'Asia/Baku'
 
