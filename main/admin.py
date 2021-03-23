@@ -1,14 +1,14 @@
 from django.contrib import admin
-from main.models import Account
-from django.contrib.auth.models import User, Group
-
-admin.site.unregister([User, Group])
+from main.models import Join
 
 
 
 
-@admin.register(Account)
-class TechAdmin(admin.ModelAdmin):
+
+
+
+@admin.register(Join)
+class JoinAdmin(admin.ModelAdmin):
     # list_display = ('first_name', 'image', 'is_active_class', 'is_main', 'is_sub', 'is_position')
     # list_display_links = ('first_name')
     list_filter = ('first_name',)

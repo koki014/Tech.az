@@ -1,20 +1,20 @@
 from rest_framework import serializers
 from django.db.models import fields
-from main.models import Account
+from main.models import Join
 
 
-class AccountCreateSerializer(serializers.ModelSerializer):
+class JoinCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Account
+        model = Join
         fields = (
             'first_name',
             'last_name',
             'email',
         )
 
-class AccountSerializer(serializers.ModelSerializer):
+class JoinSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Account
+        model = Join
         fields = [
             'first_name',
             'last_name',

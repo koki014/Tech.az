@@ -1,9 +1,9 @@
 from django.urls import path, include
-from main.api.views import AccountAPIView
+from main.api.views import JoinAPIView
 
 
 
 urlpatterns = [
-    path('account/', AccountAPIView.as_view(), name='account'),
+    path('join/', JoinAPIView.as_view(), name='join'),
 
 ]

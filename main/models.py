@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 
 
-class Account(models.Model):
+class Join(models.Model):
     first_name = models.CharField(_('Name'), max_length=30, db_index=True)
     last_name = models.CharField(_('Surname'), max_length=50, db_index=True)
     email = models.EmailField(_('email address'), unique=True)
@@ -14,8 +14,8 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = _('Account')
-        verbose_name_plural = _('Accounts')
+        verbose_name = _('Join')
+        verbose_name_plural = _('Joins')
         # ordering = ('-created_at')
 
     def __str__(self):
