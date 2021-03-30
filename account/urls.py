@@ -4,5 +4,5 @@ from django.urls import path, include
 app_name = 'account'
 
 urlpatterns = [
-    path('auth/', include('account.api.urls'))
+    path('v1.0/', include('account.api.urls'))
 ]
