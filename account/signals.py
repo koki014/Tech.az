@@ -26,9 +26,9 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     year = datetime.date.today().year
     context = {
         'current_user': reset_password_token.user,
-        'username': reset_password_token.user.full_name,
+        'username': reset_password_token.user.get_fullname,
         'email': reset_password_token.user.email,
-        'reset_password_url': "{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key),
+        'reset_password_url': "{}?token={}".format(reverse('account:password_reset:reset-password-request'), reset_password_token.key),
         'token': reset_password_token.key,
         'life_time':settings.DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME,
         'year': year,

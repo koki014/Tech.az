@@ -27,5 +27,9 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
     
+    @property
+    def get_fullname(self):
+        return f'{self.first_name} {self.last_name}'
+    
 
 
