@@ -1,12 +1,14 @@
 from rest_framework import serializers
-from account.models import User
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    token = serializers.SerializerMethodField()
     class Meta:
         model = User
         fields = [
-            'id',
             'first_name',
             'last_name',
             'email',
@@ -15,7 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
             'position',
             'image',
             'cover_image',
-            'birthday'
+            'birthday',
+            'token'
         ]
         extra_kwargs = {
             'first_name': {'required': True},
@@ -23,6 +26,14 @@ class UserSerializer(serializers.ModelSerializer):
             'email': {'required': True},
             'username': {'required': True},
         }
+    
+    def get_token(self, user):
+        request = self.context.get('request')
+        if request and hasattr(request, 'META') and request.META.get('HTTP_AUTHORIZATION'):
+            header_token = request.META.get('HTTP_AUTHORIZATION')
+            return header_token.split()[1]
+        token, created = Token.objects.get_or_create(user=user)
+        return token.key
 
 
 class UserSerializerCreate(serializers.ModelSerializer):
@@ -37,4 +48,53 @@ class UserSerializerCreate(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name', 'education', 'position',
                 'image', 'cover_image', 'created_at', 'updated_at']
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'email': {'required': True},
+            'username': {'required': True}
+        }
+
+    def create(self, validated_data):
+        first_name = validated_data.get('first_name', '')
+        last_name = validated_data.get('last_name', '')
+        position = validated_data.get('position', '')
+        education = validated_data.get('education', '')
+        image = validated_data.get('image', '')
+        cover_image = validated_data.get('cover_image', '')
+        username = validated_data.get('username', '')
+        email = validated_data.get('email', '')
+        password = validated_data.get('password', '')
+        password2 = validated_data.get('password2', '')
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError(
+                {'email': 'Bu email artiq movcuddur.'}
+            )
+        if User.objects.filter(username=username).exists():
+            raise serializers.ValidationError(
+                {'username': 'Bu username artiq movcuddur.'}
+            )
+        
+        if password != password2:
+            raise serializers.ValidationError({'password': 'The two passwords differ.'})
+        user = User(username=username, email=email, first_name=first_name, last_name=last_name,
+                    position=position, image=image, cover_image=cover_image, education=education)
+        user.set_password(password)
+        user.save()
+        return user
+
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+
+    def validate_email(self, value):
+        request = self.context.get('request')
+        user = request.user
+        if value != user.email:
+            raise serializers.ValidationError(_("You can not change your email"))
+        return value
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'education', 'position',
+                'image', 'cover_image']

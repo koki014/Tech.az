@@ -1,27 +1,61 @@
-from rest_framework import viewsets
+from rest_framework.generics import CreateAPIView
 from django.contrib.auth import get_user_model
-from account.models import User
-from .serializers import UserSerializer, UserSerializerCreate
-import datetime
+from .serializers import UserSerializer, UserSerializerCreate, ProfileUpdateSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.response import Response
+from rest_framework import permissions, status, generics
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+# from accounts.utils import CustomSwaggerAutoSchema
+
 User = get_user_model()
 
 
+class LoginAPI(ObtainAuthToken):
+    custom_serializer_class = UserSerializer
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing Aritcle instances.
-    """
+    @swagger_auto_schema(request_body=AuthTokenSerializer,
+                        responses={200: custom_serializer_class})
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        user_serializer = self.custom_serializer_class(user, context={'request': request})
+        # user_serializer.is_valid(raise_exception=True)
+        return Response(user_serializer.data)
+
+
+class ProfileAPIView(generics.GenericAPIView):
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+    update_serializer_class = ProfileUpdateSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        return Response(data=self.serializer_class(request.user, context={'request': request}).data)
+
+    @swagger_auto_schema(request_body=update_serializer_class, responses={200: UserSerializer})
+    def put(self, request):
+        data = request.data
+        serializer = self.update_serializer_class(request.user, data=data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        updated_user = serializer.save()
+        return Response(data=self.serializer_class(updated_user, context={'request': request}).data,
+                        status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(request_body=update_serializer_class, responses={200: UserSerializer})
+    def patch(self, request):
+        data = request.data
+        serializer = self.update_serializer_class(request.user, data=data, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        updated_user = serializer.save()
+        return Response(data=self.serializer_class(updated_user, context={'request': request}).data,
+                        status=status.HTTP_200_OK)
 
 
-class UserCreateViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing Aritcle instances.
-    """
+class RegisterAPIView(CreateAPIView):
+    model = User
     serializer_class = UserSerializerCreate
-    # queryset = User.objects.all()
 
-
-
-SUPERUSER_LIFETIME = datetime.timedelta(minutes=1)
+    @swagger_auto_schema(request_body=UserSerializerCreate)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
