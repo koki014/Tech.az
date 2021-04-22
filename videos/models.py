@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from main.models import Tag
+
+from tech.commons import slugify
+
 User = get_user_model()
 
 
@@ -17,6 +20,7 @@ class Video(models.Model):
     cover_image = models.ImageField("Image", upload_to='cover_images', null=True, blank=True)
     video_link = models.URLField(max_length=300, blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
+    slug = models.SlugField('Slug', max_length=110, editable=False, default='', unique = True)
 
     # moderations
     is_published = models.BooleanField('is published', default=True)
@@ -32,3 +36,12 @@ class Video(models.Model):
         self.views +=4
         self.save()
         return True
+
+    def save(self):
+        news = Video.objects.filter(title=self.title).first()
+        super(self).save(*args, **kwargs)
+        if len(self.slug) == 0: 
+            self.slug = f'{slugify(self.title)}-{self.id}'
+        super(self).save(*args, **kwargs)
+
+

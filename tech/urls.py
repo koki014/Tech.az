@@ -21,6 +21,7 @@ from django.conf import settings
 admin.site.site_header = "Tech.az"
 admin.site.site_title = "Tech.az"
 admin.site.index_title = "Tech.az"
+
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
