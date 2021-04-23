@@ -7,12 +7,12 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 class User(AbstractUser):
-    # information's 
+    # information
     education = models.CharField("Education", max_length=256, null=True, blank=True)
     image = models.ImageField("Image", upload_to='users_images', null=True, blank=True)
     position = models.CharField("Position", max_length=100, null=True, blank=True)
     birthday = models.DateField("Birthday", null=True, blank=True)
-    # moderation's
+    # moderation
     status = models.BooleanField('Status', default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

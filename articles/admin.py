@@ -6,7 +6,7 @@ from .models import Articles
 class ArticlesAdmin(admin.ModelAdmin):
     list_display = ("id", "title", 'is_published', )
     list_display_links = ("title",)
-    list_filter = ("title", "category")
+    list_filter = ("title", "tag")
     search_fields = ('title',)
 
     readonly_fields = (
@@ -14,6 +14,6 @@ class ArticlesAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         ('Informations', {
-            'fields': ("id", "owner", "title", "short_desc", "content",  "views", 'category', "is_published", )
+            'fields': ("id", "owner", "title", "short_desc", "content",  "views", 'tag', "is_published", )
         }),
     )
