@@ -1,5 +1,5 @@
 from django.contrib import admin
-from main.models import Join
+from main.models import *
 
 
 
@@ -24,5 +24,7 @@ class JoinAdmin(admin.ModelAdmin):
         }),
         
     )
+
+admin.site.register(Tag)
 
 admin.site.site_url = 'https://tech.az/'

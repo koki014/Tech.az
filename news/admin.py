@@ -6,7 +6,7 @@ from .models import News
 class NewsAdmin(admin.ModelAdmin):
     list_display = ("id", "title", 'owner', )
     list_display_links = ("title",)
-    list_filter = ("title", "category")
+    list_filter = ("title", "tag")
     search_fields = ('title',)
 
     readonly_fields = (
@@ -14,6 +14,6 @@ class NewsAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         ('Informations', {
-            'fields': ("id", "owner", "title", "short_desc", "content", "image", "cover_image", "video_link", "views", 'category', "is_published", )
+            'fields': ("id", "owner", "title", "short_desc", "content", "image", "cover_image", "video_link", "views", 'tag', "is_published", )
         }),
     )

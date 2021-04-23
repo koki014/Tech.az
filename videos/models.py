@@ -10,14 +10,14 @@ User = get_user_model()
 class Video(models.Model):
     #realtion
     owner =  models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag)
 
     #information
     title = models.CharField("Basliq", max_length=256,)
     short_desc = models.CharField("Basliq", max_length=256)
     content = models.TextField('Mezmun')
     image = models.ImageField("Image", upload_to='video_images')
-    cover_image = models.ImageField("Image", upload_to='cover_images', null=True, blank=True)
+    cover_image = models.ImageField("Image", upload_to='cover_images')
     video_link = models.URLField(max_length=300, blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField('Slug', max_length=110, editable=False, default='', unique = True)

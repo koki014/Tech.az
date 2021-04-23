@@ -10,7 +10,7 @@ User = get_user_model()
 class News(models.Model):
     #realtion
     owner =  models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag)
 
     #information
     title = models.CharField("Basliq", max_length=256,)
