@@ -35,10 +35,15 @@ class Articles(models.Model):
         self.save()
         return True
 
-    def save(self):
+    def save(self, *args, **kwargs):
         news = Articles.objects.filter(title=self.title).first()
-        super(self).save(*args, **kwargs)
-        if len(self.slug) == 0: 
-            self.slug = f'{slugify(self.title)}-{self.id}'
-        super(self).save(*args, **kwargs)
+        # print(len(self.slug), 'salamnn')
+
+        if not news: 
+            print('girdi')
+            self.slug = slugify(f'{self.title}')
+        else:
+            print('girmedi')
+            self.slug = f'{slugify(self.title)}-{news.id}'
+        super(Articles, self).save(*args, **kwargs)
 

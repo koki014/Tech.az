@@ -94,9 +94,5 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-<<<<<<< HEAD
-        fields = ['username', 'email', 'first_name', 'last_name', 'education', 'position', 'image']
-=======
         fields = ['username', 'email', 'first_name', 'last_name', 'education', 'position',
                 'image',]
->>>>>>> 94877c851e5b0fec58480ffe1635df0e2de887ec

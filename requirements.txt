@@ -36,6 +36,7 @@ simplejson==3.17.2
 six==1.15.0
 sqlparse==0.4.1
 typing-extensions==3.7.4.3
+Unidecode==1.2.0
 uritemplate==3.0.1
 urllib3==1.26.4
 zipp==3.4.0

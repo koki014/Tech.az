@@ -4,16 +4,17 @@ from .models import Articles
 
 @admin.register(Articles)
 class ArticlesAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", 'is_published', )
+    list_display = ("id", "title", 'is_published', 'slug',)
     list_display_links = ("title",)
     list_filter = ("title", "tag")
     search_fields = ('title',)
+    readonly_fields = ('slug',)
 
     readonly_fields = (
         'created_at',
     )
     fieldsets = (
         ('Informations', {
-            'fields': ("id", "owner", "title", "short_desc", "content",  "views", 'tag', "is_published", )
+            'fields': ("owner", "title", "short_desc", "content",  "views", 'tag', "is_published",)
         }),
     )
