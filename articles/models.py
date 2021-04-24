@@ -11,7 +11,7 @@ User = get_user_model()
 class Articles(models.Model):
     #realtion
     owner =  models.ForeignKey(User, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag, related_name='articles')
 
     #information
     title = models.CharField("Basliq", max_length=256,)
@@ -44,6 +44,6 @@ class Articles(models.Model):
             self.slug = slugify(f'{self.title}')
         else:
             print('girmedi')
-            self.slug = f'{slugify(self.title)}-{news.id}'
+            self.slug = f'{slugify(self.title)}-{news.created_at}'
         super(Articles, self).save(*args, **kwargs)
 

@@ -10,8 +10,9 @@ User = get_user_model()
 
 
 class ArticleSerializers(serializers.ModelSerializer):
-    tag = TagSerializer()
-    owner = UserSerializer()
+    # owner = UserSerializer()
+    owner = serializers.StringRelatedField()
+    tag = serializers.SerializerMethodField()
     
     class Meta:
         model = Articles
@@ -24,10 +25,16 @@ class ArticleSerializers(serializers.ModelSerializer):
             'owner',
             'tag',
         ]
+        extra_kwargs = {'tag': {'required': False}}
+
+    def get_tag(self, obj):
+        tags = obj.tag
+
+        return TagSerializer(tags, many=True).data
 
 class ArticleCreateSerializers(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
-    tag = TagSerializer(read_only=True, many=True)
+    
     print(owner, 'malas')
     
     class Meta:
@@ -41,8 +48,10 @@ class ArticleCreateSerializers(serializers.ModelSerializer):
             'owner',
             'tag',
         ]
+        extra_kwargs = {'tag': {'required': False}}
 
     def validate(self, data):
         request = self.context.get('request')
         data['owner'] = request.user
         return super().validate(data)
+        
