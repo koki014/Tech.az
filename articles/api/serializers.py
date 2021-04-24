@@ -5,6 +5,7 @@ from account.api.serializers import UserSerializer
 from django.contrib.auth import get_user_model
 
 from main.api.serializers import TagSerializer
+from main.models import Tag
 
 User = get_user_model()
 
@@ -29,7 +30,6 @@ class ArticleSerializers(serializers.ModelSerializer):
 
     def get_tag(self, obj):
         tags = obj.tag
-
         return TagSerializer(tags, many=True).data
 
 class ArticleCreateSerializers(serializers.ModelSerializer):

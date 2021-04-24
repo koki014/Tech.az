@@ -14,6 +14,6 @@ class NewsAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         ('Informations', {
-            'fields': ("id", "owner", "title", "short_desc", "content", "image", "cover_image", "video_link", "views", 'tag', "is_published", )
+            'fields': ("owner", "title", "short_desc", "content", "image", "cover_image", "video_link", "views", 'tag', "is_published", )
         }),
     )

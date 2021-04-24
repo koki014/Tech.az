@@ -55,6 +55,7 @@ urlpatterns = [
     path('user/', include('account.urls', namespace='account')),
     path('', include('articles.urls', namespace='articles')),
     path('', include('news.urls', namespace='news')),
+    path('', include('comments.urls', namespace='comments')),
 
 
     

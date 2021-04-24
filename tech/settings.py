@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'articles.apps.ArticlesConfig',
     'news.apps.NewsConfig',
     'videos.apps.VideosConfig',
+    'comments.apps.CommentsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

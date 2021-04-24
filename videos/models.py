@@ -37,11 +37,14 @@ class Video(models.Model):
         self.save()
         return True
 
-    def save(self):
-        news = Video.objects.filter(title=self.title).first()
-        super(self).save(*args, **kwargs)
-        if len(self.slug) == 0: 
-            self.slug = f'{slugify(self.title)}-{self.id}'
-        super(self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        videos = Video.objects.filter(title=self.title).first()
+        if not videos: 
+            self.slug = slugify(f'{self.title}')
+        else:
+            print('girmedi')
+            self.slug = f'{slugify(self.title)}-{videos.created_at.timestamp()}'
+        super(Video, self).save(*args, **kwargs)
+
 
 

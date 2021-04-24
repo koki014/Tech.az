@@ -36,14 +36,13 @@ class Articles(models.Model):
         return True
 
     def save(self, *args, **kwargs):
-        news = Articles.objects.filter(title=self.title).first()
+        articles = Articles.objects.filter(title=self.title).first()
         # print(len(self.slug), 'salamnn')
 
-        if not news: 
-            print('girdi')
+        if not articles: 
             self.slug = slugify(f'{self.title}')
         else:
             print('girmedi')
-            self.slug = f'{slugify(self.title)}-{news.created_at.strftime("%s")}'
+            self.slug = f'{slugify(self.title)}-{articles.created_at.timestamp()}'
         super(Articles, self).save(*args, **kwargs)
 
