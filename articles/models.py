@@ -44,6 +44,6 @@ class Articles(models.Model):
             self.slug = slugify(f'{self.title}')
         else:
             print('girmedi')
-            self.slug = f'{slugify(self.title)}-{news.created_at}'
+            self.slug = f'{slugify(self.title)}-{news.created_at.strftime("%s")}'
         super(Articles, self).save(*args, **kwargs)
 
