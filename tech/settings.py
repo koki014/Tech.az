@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_swagger',
-    # 'django_rest_resetpassword',
-    'django_rest_passwordreset',
+    'django_rest_resetpassword',
+    # 'django_rest_passwordreset',
     'drf_yasg',
     'rest_framework.authtoken'
 ]
