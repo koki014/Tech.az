@@ -13,7 +13,7 @@ class User(AbstractUser):
     )
     # information's 
     education = models.CharField("Education", max_length=256, null=True, blank=True)
-    gender = models.CharField('Gender', max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField('Gender', max_length=1, null=True, blank=True, choices=GENDER_CHOICES)
     image = models.ImageField("Image", upload_to='users_images', null=True, blank=True)
     position = models.CharField("Position", max_length=100, null=True, blank=True)
     birthday = models.DateField("Birthday", null=True, blank=True)
