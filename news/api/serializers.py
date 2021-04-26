@@ -7,8 +7,9 @@ User = get_user_model()
 
 
 class NewsSerializers(serializers.ModelSerializer):
-    tag = TagSerializer(many=True)
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    owner = serializers.StringRelatedField()
+    tag = serializers.SerializerMethodField()
+
     class Meta:
         model = News
         fields = [
@@ -25,8 +26,38 @@ class NewsSerializers(serializers.ModelSerializer):
             'created_at'
             
         ]
+
+        extra_kwargs = {'tag': {'required': False}}
+
+    def get_tag(self, obj):
+        tags = obj.tag
+        return TagSerializer(tags, many=True).data
     
+class NewsCreateSerializers(serializers.ModelSerializer):
+    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+
+
+    class Meta:
+        model = News
+        fields = [
+            'id',
+            'owner',
+            'tag',
+            'title',
+            'short_desc',
+            'content',
+            'image',
+            'cover_image',
+            'video_link',
+            'views',
+            'created_at'
+            
+        ]
+        extra_kwargs = {'tag': {'required': False}}
+
     def validate(self, data):
         request = self.context.get('request')
         data['owner'] = request.user
         return super().validate(data)
+    
+    

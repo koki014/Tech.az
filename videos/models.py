@@ -14,10 +14,10 @@ class Video(models.Model):
 
     #information
     title = models.CharField("Basliq", max_length=256,)
-    short_desc = models.CharField("Basliq", max_length=256)
+    short_desc = models.CharField("Qisa mezmun", max_length=256)
     content = models.TextField('Mezmun')
     image = models.ImageField("Image", upload_to='video_images')
-    cover_image = models.ImageField("Image", upload_to='cover_images')
+    cover_image = models.ImageField("Cover Image", upload_to='cover_images')
     video_link = models.URLField(max_length=300, blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField('Slug', max_length=110, editable=False, default='', unique = True)
@@ -37,11 +37,14 @@ class Video(models.Model):
         self.save()
         return True
 
-    def save(self):
-        news = Video.objects.filter(title=self.title).first()
-        super(self).save(*args, **kwargs)
-        if len(self.slug) == 0: 
-            self.slug = f'{slugify(self.title)}-{self.id}'
-        super(self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        videos = Video.objects.filter(title=self.title).first()
+        if not videos: 
+            self.slug = slugify(f'{self.title}')
+        else:
+            print('girmedi')
+            self.slug = f'{slugify(self.title)}-{videos.created_at.timestamp()}'
+        super(Video, self).save(*args, **kwargs)
+
 
 

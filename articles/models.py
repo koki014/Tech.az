@@ -11,7 +11,7 @@ User = get_user_model()
 class Articles(models.Model):
     #realtion
     owner =  models.ForeignKey(User, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag)
+    tag = models.ManyToManyField(Tag, related_name='articles')
 
     #information
     title = models.CharField("Basliq", max_length=256,)
@@ -35,10 +35,14 @@ class Articles(models.Model):
         self.save()
         return True
 
-    def save(self):
-        news = Articles.objects.filter(title=self.title).first()
-        super(self).save(*args, **kwargs)
-        if len(self.slug) == 0: 
-            self.slug = f'{slugify(self.title)}-{self.id}'
-        super(self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        articles = Articles.objects.filter(title=self.title).first()
+        # print(len(self.slug), 'salamnn')
+
+        if not articles: 
+            self.slug = slugify(f'{self.title}')
+        else:
+            print('girmedi')
+            self.slug = f'{slugify(self.title)}-{articles.created_at.timestamp()}'
+        super(Articles, self).save(*args, **kwargs)
 

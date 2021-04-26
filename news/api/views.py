@@ -6,6 +6,12 @@ from ..models import News
 class NewsViewSet(ModelViewSet):
     permission_classes = [permissions.AllowAny,]
     queryset = News.objects.filter(is_published=True)
-    serializer_class = NewsSerializers
+    serializers = {
+        'list': NewsSerializers,
+        'default': NewsCreateSerializers
+    }
+
+    def get_serializer_class(self):
+        return self.serializers.get(self.action, self.serializers.get('default'))
 
 
