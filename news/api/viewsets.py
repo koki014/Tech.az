@@ -2,6 +2,7 @@ from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from django import http
 
 from .serializers import *
 from ..models import News
@@ -40,24 +41,24 @@ class NewsViewSet(ModelViewSet):
                 if queryset:
                     serializer = CommentSerializers(queryset, context={'request': request})
                     return Response(serializer.data)
-                return Response({'message': 'comment not founded'})
+                return Response({'message': 'comment not founded'}, status=404)
             else:
                 print(request.data, 'lalar')
                 if request.data:
                     serializer = CommentCreateSerializers(data=request.data, context={'request': request})
                     serializer.is_valid(raise_exception=False)
                     serializer.save(owner=request.user, news=news)
-                    return Response(serializer.data)
+                    return Response(serializer.data, status=201)
                 return Response({'content': 'this field required'})
-        return Response({'message': 'news not founded'})
+        return Response({'message': 'news not founded'}, status=404)
 
     @action(detail=False, methods=['DELETE'])
     def remove_comment(self, request, pk, comment_id):
         comment = Comment.objects.filter(pk=comment_id)
         if comment:
             if comment.delete():
-                return Response({'message':'Comment deleted'})
+                return Response({'message':'Comment deleted'}, status=204)
             else:
-                return Response({'message': 'unable to delete comment'})
-        return Response({'message': 'comment not founded'})
+                return Response({'message': 'unable to delete comment'}, status=204)
+        return Response({'message': 'comment not founded'}, status=404)
 

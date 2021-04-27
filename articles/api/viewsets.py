@@ -1,3 +1,4 @@
+from django import http
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -53,17 +54,17 @@ class ArticleViewSets(ModelViewSet):
                 serializer.is_valid(raise_exception=True)
                 serializer.save(owner=request.user, articles=article)
                 return Response(serializer.data)
-        return Response({'message': 'article not founded'})
+        return Response({'message': 'article not founded'}, status=404)
 
     @action(detail=False, methods=['DELETE'])
     def remove_comment(self, request, pk, comment):
         comment = Comment.objects.filter(pk=comment)
         if comment:
             if comment.delete():
-                return Response({'message':'Comment deleted'})
+                return Response({'message':'Comment deleted'}, status=204)
             else:
-                return Response({'message':'unable to delete comment'})
-        return Response({'message': 'comment not founded'})
+                return Response({'message':'unable to delete comment'}, status=400)
+        return Response({'message': 'comment not founded'}, status=404)
 
     # @action(detail=False, method=['GET', "POST"])
     # def reply_comment(self, request, pk, comment):
