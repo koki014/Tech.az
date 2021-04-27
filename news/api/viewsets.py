@@ -52,12 +52,12 @@ class NewsViewSet(ModelViewSet):
         return Response({'message': 'news not founded'})
 
     @action(detail=False, methods=['DELETE'])
-    def remove_comment(self, request, pk):
-        comment = Comment.objects.filter(pk=pk)
+    def remove_comment(self, request, pk, comment_id):
+        comment = Comment.objects.filter(pk=comment_id)
         if comment:
             if comment.delete():
                 return Response({'message':'Comment deleted'})
             else:
                 return Response({'message': 'unable to delete comment'})
-        return Response({'message': 'news not founded'})
+        return Response({'message': 'comment not founded'})
 

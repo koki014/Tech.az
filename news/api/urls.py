@@ -10,6 +10,6 @@ app_name='news'
 
 urlpatterns = [
     url(r'news/(?P<pk>\d+)/comments/$', view=NewsViewSet.as_view({'get':'comments', 'post':'comments'})),
-    url(r'news/(?P<pk>\d+)/comments/(?P<comment>\d+)/$', view=NewsViewSet.as_view({'delete':'remove_comment'})),
+    url(r'news/(?P<pk>\d+)/comments/(?P<comment_id>\d+)/$', view=NewsViewSet.as_view({'delete':'remove_comment'})),
 ]
 urlpatterns += router.urls
