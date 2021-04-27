@@ -11,11 +11,16 @@ from comments.api.serializers import CommentSerializers
 User = get_user_model()
 
 
+# articles_detail_url = serializers.HyperlinkedIdentityField(
+#     view_name='app_name:view_name',
+#     lookup_field='slug'
+# )
+
 class ArticleSerializers(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
     # owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
-    articles_comments = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
     class Meta:
         model = Articles
         fields  = [
@@ -26,7 +31,7 @@ class ArticleSerializers(serializers.ModelSerializer):
             'views',
             'owner',
             'tag',
-            'articles_comments'
+            'comments'
         ]
         extra_kwargs = {'tag': {'required': False}}
 
@@ -34,15 +39,20 @@ class ArticleSerializers(serializers.ModelSerializer):
         tags = obj.tag
         return TagSerializer(tags, many=True).data
 
-    def get_articles_comments(self, obj):
-        tags = obj.articles_comments
-        return CommentSerializers(tags, many=True).data
+    def get_owner(self, obj):
+        return obj.owner.username
+
+
+    def get_comments(self, obj):
+        comment = obj.articles_comments
+        return CommentSerializers(comment, many=True).data
 
 class ArticleCreateSerializers(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
 
     class Meta:
         model = Articles
+        extra_kwargs = {'tag': {'required': False}}
         fields  = [
             'id',
             'title',
@@ -52,7 +62,6 @@ class ArticleCreateSerializers(serializers.ModelSerializer):
             'owner',
             'tag',
         ]
-        extra_kwargs = {'tag': {'required': False}}
 
     def validate(self, data):
         request = self.context.get('request')

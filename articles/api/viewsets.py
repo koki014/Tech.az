@@ -31,8 +31,7 @@ class ArticleViewSets(ModelViewSet):
         return queryset
 
     def create(self, request):
-        serializer = ArticleCreateSerializers(
-            data=request.data, context={'request': request})
+        serializer = ArticleCreateSerializers(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True) # check all fields is valid before attempting to save
         serializer.save(owner=request.user)
         return Response(serializer.data)
@@ -40,28 +39,34 @@ class ArticleViewSets(ModelViewSet):
 
     @action(detail=False, methods=['POST','GET'])
     def comments(self, request, pk):
-        article = Articles.objects.get(pk=pk)
-        print(article, 'qakar')
-        if request.method == 'GET':
-            self.serializer_class = ArticleSerializers
-            queryset = Comment.objects.filter(articles=article);
-            print(queryset, 'dakar')
-            serializer = CommentSerializers(queryset, many=True, context={'request':request})
-            return Response(serializer.data)
-        else:
-            self.serializer_class = ArticleCreateSerializers
-            queryset = Comment.objects.filter(articles=article);
-            print(queryset, 'madar')
-            serializer = CommentCreateSerializers(data=request.data, context={'request':request})
-            serializer.is_valid(raise_exception=True)
-            serializer.save(owner=request.user, articles=article)
-            return Response(serializer.data)
-
+        article = Articles.objects.filter(pk=pk).first()
+        self.serializer_class = CommentSerializers
+        queryset = Comment.objects.filter(articles=article).first();
+        if article:
+            if request.method == 'GET':
+                if queryset:
+                    serializer = CommentSerializers(queryset, many=True, context={'request':request})
+                    return Response(serializer.data)
+                return Response({'message': 'comment not founded'})
+            else:
+                serializer = CommentCreateSerializers(data=request.data, context={'request':request})
+                serializer.is_valid(raise_exception=True)
+                serializer.save(owner=request.user, articles=article)
+                return Response(serializer.data)
+        return Response({'message': 'article not founded'})
 
     @action(detail=False, methods=['DELETE'])
     def remove_comment(self, request, pk, comment):
-        comment = Comment.objects.get(pk=comment)
-        if comment.delete():
-            return Response({'message':'Comment deleted'})
-        else:
-            return Response({'message':'unable to delete comment'})
+        comment = Comment.objects.filter(pk=comment)
+        if comment:
+            if comment.delete():
+                return Response({'message':'Comment deleted'})
+            else:
+                return Response({'message':'unable to delete comment'})
+        return Response({'message': 'comment not founded'})
+
+    # @action(detail=False, method=['GET', "POST"])
+    # def reply_comment(self, request, pk, comment):
+    #     comment = Comment.objects.get(pk=comment)
+    #     if request.method == 'GET':
+    #         self.serializer_class = C
