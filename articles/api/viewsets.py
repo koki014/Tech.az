@@ -79,25 +79,3 @@ class ArticleViewSets(ModelViewSet):
                 serializer.save(owner=request.user, parent=comment)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
-
-    # @action(detail=False, methods=['GET', "POST"])
-    # def reply_comment(self, request, pk, comment_id):
-    #     try:
-    #         # article = get_object_or_404(Articles, pk=comment_id)
-    #         parent = Comment.objects.filter(pk=comm)
-    #     except Articles.DoesNotExist:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
-    #     if request.method == 'GET':
-    #         comment = Comment.objects.filter(articles=article)
-    #         serializer = CommentCreateSerializers(article, many=True)
-    #     if request.method == 'POST':
-    #         serializer = CommentCreateSerializers(data=request.data, context={'request':request})
-    #         if serializer.is_valid():
-    #             serializer.save()
-    #             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # URLS PY DA URLI YAZ
-        # comment = Comment.objects.filter(pk=comment)
-        # if request.method == 'GET':
-        #     self.serializer_class = 
