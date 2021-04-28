@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 
 # Create your models here.
@@ -6,6 +7,7 @@ from django.db import models
 class Comment(models.Model):
     # informations
     content = models.TextField("Komment", blank=False, null=False)
+    comment_uuid = models.UUIDField('Comment ID', default=uuid.uuid1())
 
     # relation's
     owner = models.ForeignKey("account.User", on_delete=models.CASCADE)
@@ -38,6 +40,6 @@ class Comment(models.Model):
     @property
     def is_parent(self):
         if self.parent is not None:
-            return False
-        return True
+            return True
+        return False
 
