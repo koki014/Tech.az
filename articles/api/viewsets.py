@@ -66,14 +66,11 @@ class ArticleViewSets(ModelViewSet):
     def reply_comment(self, request, pk, comment_id):
         try:
             article = Articles.objects.filter(pk=pk).first()
-            print(article, 'artikl')
             comment = Comment.objects.filter(pk=comment_id).first()
-            print(comment, 'komment')
         except Articles.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         if request.method == 'GET':
             # comment = Comment.objects.filter(articles=article)
-            print(comment, 'ala')
             serializer = CommentSerializers(comment)
             return Response(serializer.data)
         if request.method == 'POST':

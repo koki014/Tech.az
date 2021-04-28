@@ -27,12 +27,23 @@ class Comment(models.Model):
 
     def __str__(self):
         if self.articles:
+            
             return "Comment by: {0} on {1}".format(self.owner.username, self.articles)
         if self.videos:
             return "Comment by: {0} on {1}".format(self.owner.username, self.videos)
         if self.news:
             return "Comment by: {0} on {1}".format(self.owner.username, self.news)
         return self.content
+    
+    def get_category(self):
+        if self.articles:
+            # print(self.articles.objects.get('title'))
+            return "{0}".format(self.articles.title)
+        if self.videos:
+            return "{0}".format(self.videos.title)
+        if self.news:
+            return "{0}".format(self.news.title)
+        return None
 
     def children(self):
         return Comment.objects.filter(parent=self)

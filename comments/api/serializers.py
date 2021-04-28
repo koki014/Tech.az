@@ -5,6 +5,7 @@ from articles.models import Articles
 
 
 class CommentChildSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     replies = serializers.SerializerMethodField()
     reply_count = serializers.SerializerMethodField()
 
@@ -12,6 +13,7 @@ class CommentChildSerializer(serializers.ModelSerializer):
         model = Comment
         fields = [
             'id',
+            'owner',
             'parent',
             'content',
             'reply_count',
@@ -19,15 +21,19 @@ class CommentChildSerializer(serializers.ModelSerializer):
             'created_at'
         ]
 
+    def get_owner(self, obj):
+        return obj.owner.username
+
+
     def get_reply_count(self, obj):
         if obj.is_parent:
-            print(obj.children(), 'balalar')
             return obj.children().count()
         return 0
 
     def get_replies(self, obj):
-        return CommentChildSerializer(obj.children(), many=True).data
-
+        if obj.children():
+            return CommentChildSerializer(obj.children(), many=True).data
+        return []
 
 class CommentSerializers(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
@@ -36,16 +42,20 @@ class CommentSerializers(serializers.ModelSerializer):
     articles = serializers.PrimaryKeyRelatedField(queryset= Articles.objects.all() if Articles.objects.all() else {}, required=False)
     reply_count = serializers.SerializerMethodField()
     replies = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
 
     
     class Meta:
         model = Comment
-        fields = ['id', 'owner', 'content', 'reply_count', 'replies', 'news', 'videos', 'articles']
+        fields = ['id', 'category', 'owner', 'parent', 'content', 'reply_count', 'replies', 'news', 'videos', 'articles']
 
     def get_reply_count(self, obj):
         if obj.children():
             return obj.children().count()
         return 0
+
+    def get_category(self, obj):
+        return obj.get_category()
     
     def get_owner(self, obj):
         return obj.owner.username
@@ -53,6 +63,7 @@ class CommentSerializers(serializers.ModelSerializer):
     def get_replies(self, obj):
         if obj.children():
             return CommentChildSerializer(obj.children(), many=True).data
+        return []
         # if obj.is_parent:
         #     return CommentChildSerializer(obj.children(), many=True)
         # return None
