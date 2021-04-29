@@ -38,11 +38,11 @@ class Comment(models.Model):
     def get_category(self):
         if self.articles:
             # print(self.articles.objects.get('title'))
-            return "{0}".format(self.articles.title)
+            return "{0}".format(self.articles.id)
         if self.videos:
-            return "{0}".format(self.videos.title)
+            return "{0}".format(self.videos.id)
         if self.news:
-            return "{0}".format(self.news.title)
+            return "{0}".format(self.news.id)
         return None
 
     def children(self):

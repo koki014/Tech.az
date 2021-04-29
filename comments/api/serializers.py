@@ -37,9 +37,9 @@ class CommentChildSerializer(serializers.ModelSerializer):
 
 class CommentSerializers(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
-    news = serializers.StringRelatedField()
-    videos = serializers.StringRelatedField()
-    articles = serializers.PrimaryKeyRelatedField(queryset= Articles.objects.all() if Articles.objects.all() else {}, required=False)
+    # news = serializers.StringRelatedField()
+    # videos = serializers.StringRelatedField()
+    # articles = serializers.PrimaryKeyRelatedField(queryset= Articles.objects.all() if Articles.objects.all() else {}, required=False)
     reply_count = serializers.SerializerMethodField()
     replies = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
@@ -47,7 +47,7 @@ class CommentSerializers(serializers.ModelSerializer):
     
     class Meta:
         model = Comment
-        fields = ['id', 'category', 'owner', 'parent', 'content', 'reply_count', 'replies', 'news', 'videos', 'articles']
+        fields = ['id', 'category', 'owner', 'content', 'reply_count', 'replies']
 
     def get_reply_count(self, obj):
         if obj.children():
