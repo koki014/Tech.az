@@ -69,7 +69,7 @@ class ArticleViewSets(ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         if request.method == 'GET':
             # comment = Comment.objects.filter(articles=article)
-            serializer = CommentSerializers(comment)
+            serializer = CommentChildSerializer(comment)
             return Response(serializer.data)
         if request.method == 'POST':
             serializer = CommentCreateSerializers(data=request.data, context={'request':request})

@@ -1,5 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
+from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import status
+
 from .serializers import *
 from ..models import *
 from comments.api.serializers import *
@@ -8,8 +12,8 @@ from comments.models import *
 
 class VideoViewSet(ModelViewSet):
     permission_classes = [permissions.AllowAny,]
-    queryset = Video.objects.filter(is_published=True)
-    serializers = VideoSerializers
+    queryset = Video.objects.filter(is_published=True)    
+    serializer_class = VideoSerializers
     
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -19,10 +23,11 @@ class VideoViewSet(ModelViewSet):
         return queryset
 
     def create(self, request):
-        serializer = VideoCreateSerializers(data=request, context={'request': request})
+        serializer = VideoCreateSerializers(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True) # check all fields is valid before attempting to save
         serializer.save(owner=request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
     
 
     @action(detail=False, methods=['GET', 'POST'])
@@ -36,6 +41,7 @@ class VideoViewSet(ModelViewSet):
                     serializer = CommentSerializers(queryset, many=True, context={'request':request})
                 return Response({'message':'comment not founded'})
             else:
+                print('testtets')
                 serializer = CommentCreateSerializers(data=request.data, context={'request':request})
                 serializer.is_valid(raise_exception=True)
                 serializer.save(owner=request.user, videos=video)
@@ -45,11 +51,30 @@ class VideoViewSet(ModelViewSet):
     
     @action(detail=False, methods=['DELETE'])
     def remove_comment(self, request, pk, comment_id):
-        comment = Comment.objets.filter(pk=comment_id)
+        comment = Comment.objects.filter(pk=comment_id)
         if comment:
             if comment.delete():
                 return Response({'message':'Comment deleted'}, status=204)
             else:
                 return Response({'message': 'unable to delete comment'}, stautus=400)
         return Response({'message': 'article not founded'}, status=404)
+    
+    @action(detail=False, methods=['GET', 'POST'])
+    def reply_comment(self, request, pk, comment_id):
+        try:
+            video = Video.objects.filter(pk=pk).first()
+            comment = Comment.objects.filter(pk=comment_id).first()
+        except Video.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            # comment = Comment.objects.filter(articles=article)
+            serializer = CommentChildSerializer(comment)
+            return Response(serializer.data)
+        if request.method == 'POST':
+            serializer = CommentCreateSerializers(data=request.data, context={'request':request})
+            if serializer.is_valid():
+                serializer.save(owner=request.user, parent=comment)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
         

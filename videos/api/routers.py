@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
-from .views import *
+from .viewsets import *
 
 router = DefaultRouter()
 
-router.register(r'video', VideoViewSet)
+router.register(r'videos', VideoViewSet)

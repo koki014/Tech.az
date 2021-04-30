@@ -17,8 +17,8 @@ User = get_user_model()
 # )
 
 class ArticleSerializers(serializers.ModelSerializer):
-    # owner = UserSerializer(read_only=True)
-    # owner = serializers.StringRelatedField()
+    owner = UserSerializer(read_only=True)
+    owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
 
@@ -30,8 +30,9 @@ class ArticleSerializers(serializers.ModelSerializer):
             'short_desc',
             'content',
             'views',
-            # 'owner',
+            'owner',
             'tag',
+            
             'comments'
         ]
         extra_kwargs = {'tag': {'required': False}}
@@ -40,8 +41,8 @@ class ArticleSerializers(serializers.ModelSerializer):
         tags = obj.tag
         return TagSerializer(tags, many=True).data
 
-    # def get_owner(self, obj):
-    #     return obj.owner.username
+    def get_owner(self, obj):
+        return obj.owner.username
 
 
     def get_comments(self, obj):
@@ -49,7 +50,7 @@ class ArticleSerializers(serializers.ModelSerializer):
         return CommentSerializers(comment, many=True).data
 
 class ArticleCreateSerializers(serializers.ModelSerializer):
-    # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
+    owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
 
     class Meta:
         model = Articles
@@ -60,7 +61,7 @@ class ArticleCreateSerializers(serializers.ModelSerializer):
             'short_desc',
             'content',
             'views',
-            # 'owner',
+            'owner',
             'tag',
         ]
 

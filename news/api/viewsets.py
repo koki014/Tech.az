@@ -9,7 +9,7 @@ from ..models import News
 from comments.models import Comment
 from comments.api.serializers import *
 
-class NewsViewSet(ModelViewSet):
+class NewsViewSets(ModelViewSet):
     permission_classes = [permissions.AllowAny,]
     queryset = News.objects.filter(is_published=True)
     serializer_class = NewsSerializers
@@ -61,4 +61,22 @@ class NewsViewSet(ModelViewSet):
             else:
                 return Response({'message': 'unable to delete comment'}, status=204)
         return Response({'message': 'comment not founded'}, status=404)
+    
+    @action(detail=False, methods=['GET', 'POST'])
+    def reply_comment(self, request, pk, comment_id):
+        try:
+            new = News.objects.filter(pk=pk).first()
+            comment = Comment.objects.filter(pk=comment_id).first()
+        except News.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if request.method == 'GET':
+            # comment = Comment.objects.filter(articles=article)
+            serializer = CommentChildSerializer(comment)
+            return Response(serializer.data)
+        if request.method == 'POST':
+            serializer = CommentCreateSerializers(data=request.data, context={'request':request})
+            if serializer.is_valid():
+                serializer.save(owner=request.user, parent=comment)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
 

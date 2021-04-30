@@ -8,9 +8,10 @@ User = get_user_model()
 from ..models import Video
 
 class VideoSerializers(serializers.ModelSerializer):
-    # owner = serializers.StringRelatedField()
+    owner = UserSerializer(read_only=True)
+    owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
-    comment = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
     
 
     class Meta:
@@ -26,14 +27,12 @@ class VideoSerializers(serializers.ModelSerializer):
             'cover_image',
             'video_link',
             'views',
-            'comment',
+            'comments',
             'created_at'
             ]
 
         extra_kwargs = {
             'tag': {'required': False},
-            'video_link': {'required': True}
-
             }
 
     def get_tag(self, obj):
@@ -44,12 +43,12 @@ class VideoSerializers(serializers.ModelSerializer):
         return obj.owner.username
     
     def get_comments(self, obj):
-        comment = obj.articles_comments
+        comment = obj.videos_comments
         return CommentSerializers(comment, many=True).data
     
 
 class VideoCreateSerializers(serializers.ModelSerializer):
-    # owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
 
     class Meta:
         model = Video
