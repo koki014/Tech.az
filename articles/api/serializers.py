@@ -6,15 +6,22 @@ from django.contrib.auth import get_user_model
 
 from main.api.serializers import TagSerializer
 from main.models import Tag
+from comments.api.serializers import CommentSerializers
 
 User = get_user_model()
 
 
+# articles_detail_url = serializers.HyperlinkedIdentityField(
+#     view_name='app_name:view_name',
+#     lookup_field='slug'
+# )
+
 class ArticleSerializers(serializers.ModelSerializer):
-    # owner = UserSerializer()
-    owner = serializers.StringRelatedField()
+    # owner = UserSerializer(read_only=True)
+    # owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
-    
+    comments = serializers.SerializerMethodField()
+
     class Meta:
         model = Articles
         fields  = [
@@ -23,8 +30,9 @@ class ArticleSerializers(serializers.ModelSerializer):
             'short_desc',
             'content',
             'views',
-            'owner',
+            # 'owner',
             'tag',
+            'comments'
         ]
         extra_kwargs = {'tag': {'required': False}}
 
@@ -32,22 +40,29 @@ class ArticleSerializers(serializers.ModelSerializer):
         tags = obj.tag
         return TagSerializer(tags, many=True).data
 
+    # def get_owner(self, obj):
+    #     return obj.owner.username
+
+
+    def get_comments(self, obj):
+        comment = obj.articles_comments
+        return CommentSerializers(comment, many=True).data
+
 class ArticleCreateSerializers(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
-    
-    
+    # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
+
     class Meta:
         model = Articles
+        extra_kwargs = {'tag': {'required': False}}
         fields  = [
             'id',
             'title',
             'short_desc',
             'content',
             'views',
-            'owner',
+            # 'owner',
             'tag',
         ]
-        extra_kwargs = {'tag': {'required': False}}
 
     def validate(self, data):
         request = self.context.get('request')

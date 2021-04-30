@@ -18,7 +18,7 @@ class Video(models.Model):
     content = models.TextField('Mezmun')
     image = models.ImageField("Image", upload_to='video_images')
     cover_image = models.ImageField("Cover Image", upload_to='cover_images')
-    video_link = models.URLField(max_length=300, blank=True, null=True)
+    video_link = models.URLField(max_length=300)
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField('Slug', max_length=110, editable=False, default='', unique = True)
 

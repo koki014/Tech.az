@@ -1,15 +1,17 @@
 from rest_framework import serializers
 from account.api.serializers import UserSerializer
 from main.api.serializers import TagSerializer
-
+from comments.api.serializers import CommentSerializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
 from ..models import Video
 
 class VideoSerializers(serializers.ModelSerializer):
-    owner = serializers.StringRelatedField()
+    # owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = Video
@@ -24,18 +26,30 @@ class VideoSerializers(serializers.ModelSerializer):
             'cover_image',
             'video_link',
             'views',
+            'comment',
             'created_at'
             ]
 
-        extra_kwargs = {'tag': {'required': False}}
+        extra_kwargs = {
+            'tag': {'required': False},
+            'video_link': {'required': True}
+
+            }
 
     def get_tag(self, obj):
         tags = obj.tag
         return TagSerializer(tags, many=True).data
     
+    def get_owner(self, obj):
+        return obj.owner.username
+    
+    def get_comments(self, obj):
+        comment = obj.articles_comments
+        return CommentSerializers(comment, many=True).data
+    
 
 class VideoCreateSerializers(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    # owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
 
     class Meta:
         model = Video
