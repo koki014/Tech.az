@@ -48,8 +48,8 @@ class VideoSerializers(serializers.ModelSerializer):
     
 
 class VideoCreateSerializers(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
-
+    # owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    owner = UserSerializer(read_only=True)
     class Meta:
         model = Video
         fields = [

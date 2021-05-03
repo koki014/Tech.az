@@ -26,7 +26,7 @@ class ArticleViewSets(ModelViewSet):
         return queryset
 
     def create(self, request):
-        serializer = ArticleCreateSerializers(data=request, context={'request': request})
+        serializer = ArticleCreateSerializers(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True) # check all fields is valid before attempting to save
         serializer.save(owner=request.user)
         return Response(serializer.data)

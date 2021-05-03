@@ -51,7 +51,9 @@ class NewsSerializers(serializers.ModelSerializer):
 
 
 class NewsCreateSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
+    
+    owner = UserSerializer(read_only=True)
     class Meta:
         model = News
         extra_kwargs = {'tag': {'required': False}}
@@ -66,7 +68,6 @@ class NewsCreateSerializer(serializers.ModelSerializer):
             'image',
             'cover_image',
             'video_link',
-            'comments',
             'views',
             'created_at'
         ]
