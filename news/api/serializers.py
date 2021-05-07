@@ -9,7 +9,6 @@ User = get_user_model()
 
 
 class NewsSerializers(serializers.ModelSerializer):
-    tag = TagSerializer(many=True)
     tag = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
