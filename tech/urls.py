@@ -45,11 +45,11 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    re_path(r'^$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # re_path(r'^swa$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     path('api-doc/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('user/', include('account.urls', namespace='account')),
