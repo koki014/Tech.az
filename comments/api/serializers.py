@@ -18,7 +18,7 @@ class CommentChildSerializer(serializers.ModelSerializer):
             'content',
             'reply_count',
             'replies',
-            'created_at'
+            'created_at',
         ]
 
     def get_owner(self, obj):

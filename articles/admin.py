@@ -15,6 +15,6 @@ class ArticlesAdmin(admin.ModelAdmin):
     )
     fieldsets = (
         ('Informations', {
-            'fields': ("owner", "title", "short_desc", "content",  "views", 'tag', "is_published",)
+            'fields': ("owner", "title", "short_desc", "content",  "views", 'tag', "is_published", )
         }),
     )

@@ -45,7 +45,7 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    re_path(r'^$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # re_path(r'^swa$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
@@ -56,6 +56,8 @@ urlpatterns = [
     path('', include('articles.urls', namespace='articles')),
     path('', include('news.urls', namespace='news')),
     path('', include('comments.urls', namespace='comments')),
+    path('', include('videos.urls', namespace='video')),
+
 
 
     

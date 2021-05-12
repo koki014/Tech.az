@@ -3,4 +3,4 @@ from .viewsets import *
 
 router = DefaultRouter()
 
-router.register(r'news', NewsViewSets)
+router.register(r'videos', VideoViewSet)

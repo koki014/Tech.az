@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'django_rest_resetpassword',
-
+    # 'django_rest_passwordreset',
     'drf_yasg',
     'rest_framework.authtoken'
 ]
@@ -133,7 +133,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'tech_db_name',
             'USER': 'tech_db_user',
-            'PORT': 5436,
+            'PORT': 5433,
             'PASSWORD': 'f26b8ab553cfd4767216dbc7be7702fcad1b0115a6347e87e',
             'HOST': '127.0.0.1',
         }
@@ -173,6 +173,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+
 
 
 # Static files (CSS, JavaScript, Images)

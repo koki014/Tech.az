@@ -39,10 +39,11 @@ class News(models.Model):
 
     def save(self, *args, **kwargs):
         news = News.objects.filter(title=self.title).first()
+        # print(len(self.slug), 'salamnn')
 
         if not news: 
             self.slug = slugify(f'{self.title}')
         else:
             print('girmedi')
-            self.slug = f'{slugify(self.title)}-{news.created_at.timestamp()}'
+            self.slug = f'{slugify(self.title)}-{news.updated_at.timestamp()}'
         super(News, self).save(*args, **kwargs)

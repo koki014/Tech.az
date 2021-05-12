@@ -33,7 +33,7 @@ PyJWT==2.0.1
 pyparsing==2.4.7
 pytz==2020.5
 requests==2.25.1
-ruamel.yaml==0.17.2
+ruamel.yaml==0.16.13
 ruamel.yaml.clib==0.2.2
 simplejson==3.17.2
 six==1.15.0
