@@ -133,7 +133,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'tech_db_name',
             'USER': 'tech_db_user',
-            'PORT': 5432,
+            'PORT': 5436,
             'PASSWORD': 'f26b8ab553cfd4767216dbc7be7702fcad1b0115a6347e87e',
             'HOST': '127.0.0.1',
         }
