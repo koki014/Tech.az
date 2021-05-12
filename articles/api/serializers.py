@@ -50,11 +50,11 @@ class ArticleSerializers(serializers.ModelSerializer):
         return CommentSerializers(comment, many=True).data
 
 class ArticleCreateSerializers(serializers.ModelSerializer):
-    # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
     owner = UserSerializer(read_only=True)
+
     class Meta:
         model = Articles
-        extra_kwargs = {'tag': {'required': False}}
+        extra_kwargs = { 'tag': {'required': False} } 
         fields  = [
             'id',
             'title',

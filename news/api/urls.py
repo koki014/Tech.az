@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'news-comments-reply/(?P<pk>\d+)/comments/(?P<comment_id>\d+)/$', view=NewsViewSets.as_view({'get':'reply_comment', 'post':'reply_comment', 'delete': 'remove_comment'})),
 
 ]
+
 urlpatterns += router.urls

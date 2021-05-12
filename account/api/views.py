@@ -8,6 +8,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 # from accounts.utils import CustomSwaggerAutoSchema
 
+
 User = get_user_model()
 
 

@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from rest_framework.decorators import action
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
 from django import http
 
@@ -9,7 +9,7 @@ from ..models import News
 from comments.models import Comment
 from comments.api.serializers import *
 
-class NewsViewSets(ModelViewSet):
+class NewsViewSets(ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny,]
     queryset = News.objects.filter(is_published=True)
     serializer_class = NewsSerializers
@@ -21,13 +21,13 @@ class NewsViewSets(ModelViewSet):
             queryset = queryset.filter(owner=owner)
         return queryset
 
-    def create(self, request):
-        serializer = NewsCreateSerializer(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=False)
-        if request.user:
-            serializer.save(owner=request.user)
-        serializer.save()
-        return Response(serializer.data)
+    # def create(self, request):
+    #     serializer = NewsCreateSerializer(data=request.data, context={'request': request})
+    #     serializer.is_valid(raise_exception=False)
+    #     if request.user:
+    #         serializer.save(owner=request.user)
+    #     # serializer.save()
+    #     return Response(serializer.data)
 
     
     @action(detail=False, methods=['GET', 'POST'])

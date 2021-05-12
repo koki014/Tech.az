@@ -2,10 +2,10 @@ version: '3.1'
 
 services: 
     postgres:
-        image: postgres:9.6.6
+        image: postgres
         restart: always
         volumes:
-            - ../pgdb/:/var/lib/postgresql/
+            - ../pgdb/:/var/lib/postgresql/data
         ports:
             - "5434:5432"
         env_file: ../.env
