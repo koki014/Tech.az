@@ -7,7 +7,7 @@ from .views import RegisterAPIView, LoginAPI, ProfileAPIView
 urlpatterns = [
     path('register/', RegisterAPIView.as_view(), name='register'),
     path('login/', LoginAPI.as_view(), name='login'),
-    path('password-reset/', include('django_rest_resetpassword.urls', namespace='password_reset')),
+    path('password-reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('user-profile/', ProfileAPIView.as_view(), name='user_profile'),
 ]
 

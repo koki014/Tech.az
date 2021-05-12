@@ -26,8 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = ')brx##30=up6zlagvyy_wg64b=ws4y1a$7f7mu5juprp_@anx='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if os.environ.get('DEBUG') else True
-PROD = not DEBUG
+# DEBUG = False if os.environ.get('DEBUG') else True
+# PROD = not DEBUG
+DEBUG = True
+PROD = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -52,8 +54,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_swagger',
-    'django_rest_resetpassword',
-    # 'django_rest_passwordreset',
+    'django_rest_passwordreset',
     'drf_yasg',
     'rest_framework.authtoken'
 ]
@@ -133,7 +134,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'tech_db_name',
             'USER': 'tech_db_user',
-            'PORT': 5432,
+            'PORT': 5434,
             'PASSWORD': 'f26b8ab553cfd4767216dbc7be7702fcad1b0115a6347e87e',
             'HOST': '127.0.0.1',
         }

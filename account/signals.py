@@ -12,6 +12,8 @@ from django_rest_passwordreset.signals import reset_password_token_created
 
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    print(reset_password_token.user.email)
+
     """
     Handles password reset tokens
     When a token is created, an e-mail needs to be sent to the user
@@ -40,7 +42,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 
     msg = EmailMultiAlternatives(
         # title:
-        "Şifrəni yenilə - {title}".format(title="Teammers"),
+        "Şifrəni yenilə - {title}".format(title="Tech.az"),
         # message:
         email_plaintext_message,
         # from:
@@ -48,5 +50,6 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         # to:
         [reset_password_token.user.email]
     )
+    
     msg.attach_alternative(email_html_message, "text/html")
     sync_to_async(msg.send())
