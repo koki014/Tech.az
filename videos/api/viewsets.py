@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import permissions
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
@@ -10,7 +10,7 @@ from comments.api.serializers import *
 from comments.models import *
 
 
-class VideoViewSet(ModelViewSet):
+class VideoViewSet(ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny,]
     queryset = Video.objects.filter(is_published=True)    
     serializer_class = VideoSerializers
@@ -22,11 +22,11 @@ class VideoViewSet(ModelViewSet):
             queryset = queryset.filter(owner=owner)
         return queryset
 
-    def create(self, request):
-        serializer = VideoCreateSerializers(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True) # check all fields is valid before attempting to save
-        serializer.save(owner=request.user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # def create(self, request):
+    #     serializer = VideoCreateSerializers(data=request.data, context={'request': request})
+    #     serializer.is_valid(raise_exception=True) # check all fields is valid before attempting to save
+    #     serializer.save(owner=request.user)
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
         
     
 
