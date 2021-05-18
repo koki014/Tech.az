@@ -73,6 +73,3 @@ class ArticleCreateSerializers(serializers.ModelSerializer):
         return super().validate(data)
     
 
-
-# class AllDataSerializers(serializers.ModelSerializer):
-#     articles = ArticleSerializers(read_only=True)
