@@ -7,8 +7,8 @@ from videos.models import *
 from articles.api.serializers  import *
 from news.api.serializers import *
 from videos.api.serializers  import *
-
-
+import json
+import pprint
 
 class AllData(APIView):
 
@@ -20,12 +20,20 @@ class AllData(APIView):
         news_list = NewsSerializers(news, many=True)
         articles_list = ArticleSerializers(articles, many=True)
         video_list = VideoSerializers(video, many=True)
+        news_list = json.loads(json.dumps(news_list.data))
+        print(type(news_list[0]))
+        print(*news_list)
+     
+        
+        
 
-        return Response({
-            'data':{
-                'news':news_list.data,
-                'articles': articles_list.data,
-                'video': video_list.data
-            }
-        })
+        # print(json.loads(news_data), 'sasasasa')
+        return Response({})
+        # return Response({
+        #     'data':{
+        #         *news_dict,
+        #         #**articles_list.data,
+        #         #**video_list.data
+        # }
+        # })
     
