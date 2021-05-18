@@ -7,6 +7,8 @@ from django.contrib.auth import get_user_model
 from main.api.serializers import TagSerializer
 from main.models import Tag
 from comments.api.serializers import CommentSerializers
+from news.api.serializers import *
+from videos.api.serializers import *
 
 User = get_user_model()
 
@@ -69,4 +71,8 @@ class ArticleCreateSerializers(serializers.ModelSerializer):
         request = self.context.get('request')
         data['owner'] = request.user
         return super().validate(data)
-        
+    
+
+
+# class AllDataSerializers(serializers.ModelSerializer):
+#     articles = ArticleSerializers(read_only=True)
