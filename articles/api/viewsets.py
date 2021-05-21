@@ -6,11 +6,22 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from rest_framework.decorators import action, api_view, permission_classes
+from drf_multiple_model.views import FlatMultipleModelAPIView
+from .paginations import LimitPagination
 
 from ..models import Articles
 from .serializers import ArticleSerializers, ArticleCreateSerializers
+
 from comments.models import Comment
 from comments.api.serializers import *
+
+from news.models import News
+from news.api.serializers import NewsSerializers
+
+from videos.models import Video
+from videos.api.serializers import VideoSerializers
+
+
 
 
 class ArticleViewSets(ModelViewSet):
@@ -77,3 +88,22 @@ class ArticleViewSets(ModelViewSet):
                 serializer.save(owner=request.user, parent=comment)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({'message': 'Bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class MixDataViewSets(FlatMultipleModelAPIView):
+    pagination_class = LimitPagination
+    sorting_fields = ['-created_at']
+
+
+    def get_querylist(self):
+        querylist = [
+            {'queryset': News.objects.all(), 'serializer_class': NewsSerializers, 'label': 'News'},
+            {'queryset': Articles.objects.all(), 'serializer_class': ArticleSerializers, 'label': 'Articles'},
+            {'queryset': Video.objects.all(), 'serializer_class': VideoSerializers, 'label': 'Videos'},
+        ]
+        return querylist
+    
+    # def mixing_datas(self, request, *args, **kwargs):
+    #     return self.get_querylist
+    
