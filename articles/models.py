@@ -15,13 +15,13 @@ class Articles(models.Model):
 
     #information
     title = models.CharField("Basliq", max_length=256,)
-    short_desc = models.CharField("Basliq", max_length=256)
+    short_desc = models.CharField("Qisa mezmun", max_length=256)
     content = models.TextField('Mezmun')
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField('Slug', max_length=110, editable=False, default='', unique = True)
 
     # moderations
-    is_published = models.BooleanField('is published', default=False)
+    is_published = models.BooleanField('is published', default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

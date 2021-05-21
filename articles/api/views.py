@@ -9,7 +9,8 @@ from news.api.serializers import *
 from videos.api.serializers  import *
 import json
 from itertools import chain
-from drf_multiple_model.views import ObjectMultipleModelAPIView
+from drf_multiple_model.views import FlatMultipleModelAPIView
+
 
 
 # class MixData(APIView):
@@ -21,14 +22,13 @@ from drf_multiple_model.views import ObjectMultipleModelAPIView
 #         video = Video.objects.all()
 #         news_list = NewsSerializers(news, many=True)
 #         articles_list = ArticleSerializers(articles, many=True)
-#         # video_list = VideoSerializers(video, many=True)
+#         video_list = VideoSerializers(video, many=True)
 #         # news_list = json.dumps(news_list)
 #         # articles_list = json.dumps(articles_list)
 
-#         orders = list(
-#                     sorted(
-#                         chain(news, articles),
-#                         key=lambda objects: objects.created_at
+#         orders = list(sorted(
+#                     chain(news_list.data, articles_list.data, video_list.data),
+#                     key=lambda objects: objects.created_at
 #                     ))
 #         # paginator = Paginator(orders, 5)
                 
@@ -37,9 +37,10 @@ from drf_multiple_model.views import ObjectMultipleModelAPIView
 #         })
     
 
-class MixData(ObjectMultipleModelAPIView):
+class MixData(FlatMultipleModelAPIView):
+    sorting_fields = ['-created_at']
     querylist = [
-        {'queryset': News.objects.all().order_by('-created_at'), 'serializer_class': NewsSerializers},
-        {'queryset': Articles.objects.all().order_by('-created_at'), 'serializer_class': ArticleSerializers},
+        {'queryset': News.objects.all(), 'serializer_class': NewsSerializers, 'label': 'News'},
+        {'queryset': Articles.objects.all(), 'serializer_class': ArticleSerializers, 'label': 'Articles'},
     ]
     

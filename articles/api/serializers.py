@@ -34,8 +34,8 @@ class ArticleSerializers(serializers.ModelSerializer):
             'views',
             'owner',
             'tag',
-            
-            'comments'
+            'created_at',
+            'comments',
         ]
         extra_kwargs = {'tag': {'required': False}}
 
@@ -65,6 +65,7 @@ class ArticleCreateSerializers(serializers.ModelSerializer):
             'views',
             'owner',
             'tag',
+            
         ]
 
     def validate(self, data):

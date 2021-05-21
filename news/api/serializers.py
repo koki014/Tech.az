@@ -27,7 +27,7 @@ class NewsSerializers(serializers.ModelSerializer):
             'video_link',
             'comments',
             'views',
-            'created_at'
+            'created_at',
         ]
 
     def get_image(self, obj):
