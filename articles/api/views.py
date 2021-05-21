@@ -1,15 +1,17 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from articles.models import *
-from news.models import *
-from videos.models import *
-from articles.api.serializers  import *
-from news.api.serializers import *
-from videos.api.serializers  import *
-import json
-from itertools import chain
-from drf_multiple_model.views import ObjectMultipleModelAPIView
+
+from drf_multiple_model.views import ObjectMultipleModelAPIView, FlatMultipleModelAPIView
+
+from articles.models import Articles
+from news.models import News
+from videos.models import Video
+from articles.api.serializers  import ArticleSerializers
+from news.api.serializers import NewsSerializers
+from videos.api.serializers  import VideoSerializers
+
+from .paginations import LimitPagination
 
 
 # class MixData(APIView):
@@ -37,7 +39,8 @@ from drf_multiple_model.views import ObjectMultipleModelAPIView
 #         })
     
 
-class MixData(ObjectMultipleModelAPIView):
+class MixData(FlatMultipleModelAPIView):
+    pagination_class = LimitPagination
     querylist = [
         {'queryset': News.objects.all().order_by('-created_at'), 'serializer_class': NewsSerializers},
         {'queryset': Articles.objects.all().order_by('-created_at'), 'serializer_class': ArticleSerializers},
