@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'django_rest_passwordreset',
     'drf_yasg',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'drf_multiple_model',
 ]
 
 MIDDLEWARE = [
@@ -223,9 +224,22 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Email Settings
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'husubayli@gmail.com'
+# EMAIL_HOST_PASSWORD = 'xdjnasiuddxikfax'
+
+# import sys
+# sys.setdefaultencoding('utf-8')
+# sys.setdefaultencoding("utf-8")
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'husubayli@gmail.com'
-EMAIL_HOST_PASSWORD = 'xdjnasiuddxikfax'
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_HOST_USER = 'info@tech.az'
+EMAIL_HOST_PASSWORD = 'czrtwuzuxewmeysl'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
