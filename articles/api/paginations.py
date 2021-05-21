@@ -2,4 +2,4 @@ from drf_multiple_model.pagination import MultipleModelLimitOffsetPagination
 
 
 class LimitPagination(MultipleModelLimitOffsetPagination):
-    default_limit = 2
+    default_limit = 20
