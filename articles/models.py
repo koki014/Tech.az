@@ -36,6 +36,7 @@ class Articles(models.Model):
         return True
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         articles = Articles.objects.filter(title=self.title).first()
         # print(len(self.slug), 'salamnn')
 
@@ -43,6 +44,6 @@ class Articles(models.Model):
             self.slug = slugify(f'{self.title}')
         else:
             print('girmedi')
-            self.slug = f'{slugify(self.title)}-{articles.updated_at.timestamp()}'
+            self.slug = f'{slugify(self.title)}-{self.id}'
         super(Articles, self).save(*args, **kwargs)
 

@@ -17,7 +17,6 @@ class VideoSerializers(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = [
-            'id',
             'owner',
             'tag',
             'title',
@@ -28,7 +27,8 @@ class VideoSerializers(serializers.ModelSerializer):
             'video_link',
             'views',
             'comments',
-            'created_at'
+            'created_at',
+            'slug'
             ]
 
         extra_kwargs = {

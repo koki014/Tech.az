@@ -34,6 +34,7 @@ class ArticleSerializers(serializers.ModelSerializer):
             'views',
             'owner',
             'tag',
+            'slug',
             'created_at',
             'comments',
         ]
