@@ -8,6 +8,7 @@ from .views import *
 
 urlpatterns = [
     path('mixdata/', MixDataViewSets.as_view()),
+    
     # path('articles/(?P<pk>)/comments/', view=ArticleViewSets.as_view({'get':'comments', 'post':'comments'})),
     # path('articles/(?P<pk>)/comments/(?P<comment>\d+)/', view=ArticleViewSets.as_view({'delete':'remove_comment'})),
     url(r'articles/(?P<pk>\d+)/comments/$', view=ArticleViewSets.as_view({'get':'comments', 'post':'comments'})),
