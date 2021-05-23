@@ -14,6 +14,7 @@ class VideoViewSet(ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny,]
     queryset = Video.objects.filter(is_published=True)    
     serializer_class = VideoSerializers
+    lookup_field = 'slug'
     
     def get_queryset(self):
         queryset = super().get_queryset()

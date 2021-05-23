@@ -94,8 +94,8 @@ class ArticleViewSets(ModelViewSet):
 class MixDataViewSets(FlatMultipleModelAPIView):
     pagination_class = LimitPagination
     sorting_fields = ['-created_at']
-
-
+    lookup_field = 'slug'
+    
     def get_querylist(self):
         querylist = [
             {'queryset': News.objects.all(), 'serializer_class': NewsSerializers, 'label': 'News'},
