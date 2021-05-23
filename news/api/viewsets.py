@@ -13,6 +13,10 @@ class NewsViewSets(ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny,]
     queryset = News.objects.filter(is_published=True)
     serializer_class = NewsSerializers
+    lookup_field = 'slug'
+    extra_kwargs = {
+        'url': {'lookup_field': 'slug'}
+    }
 
     def get_queryset(self):
         queryset = super().get_queryset()

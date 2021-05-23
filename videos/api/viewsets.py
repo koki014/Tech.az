@@ -37,7 +37,7 @@ class VideoViewSet(ReadOnlyModelViewSet):
         queryset = Comment.objects.filter(videos=video)
         if video:
             if request.method == 'GET':
-                if querset:
+                if queryset:
                     serializer = CommentSerializers(queryset, many=True, context={'request':request})
                 return Response({'message':'comment not founded'})
             else:

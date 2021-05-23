@@ -13,6 +13,8 @@ class NewsSerializers(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
     comments = serializers.SerializerMethodField()
+    # absolute_url = serializers.SerializerMethodField()
+
     class Meta:
         model = News
         fields = [
@@ -27,8 +29,11 @@ class NewsSerializers(serializers.ModelSerializer):
             'video_link',
             'comments',
             'views',
+            'slug',
             'created_at',
         ]
+
+
 
     def get_image(self, obj):
         try:

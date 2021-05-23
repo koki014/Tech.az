@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 from main.models import Tag
 
 from tech.commons import slugify
@@ -10,7 +11,7 @@ User = get_user_model()
 class News(models.Model):
     #realtion
     owner =  models.ForeignKey(User, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag, related_name='mews')
+    tag = models.ManyToManyField(Tag, related_name='news')
 
     #information
     title = models.CharField("Basliq", max_length=256,)
@@ -28,7 +29,7 @@ class News(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Xeber'
+        verbose_name = 'Xəbər'
         verbose_name_plural = 'Xeberler'
         ordering = ('-created_at',)
 
@@ -38,12 +39,31 @@ class News(models.Model):
         return True
 
     def save(self, *args, **kwargs):
+        super(News, self).save(*args, **kwargs)
         news = News.objects.filter(title=self.title).first()
-        # print(len(self.slug), 'salamnn')
-
         if not news: 
             self.slug = slugify(f'{self.title}')
         else:
             print('girmedi')
-            self.slug = f'{slugify(self.title)}-{news.updated_at.timestamp()}'
+            self.slug = f'{slugify(self.title)}-{self.id}'
         super(News, self).save(*args, **kwargs)
+
+
+class NewsImage(models.Model):
+
+    # relation's
+    news = models.ForeignKey("news.News", related_name='news_iamges', on_delete=models.CASCADE, blank=True, null=True)
+
+    # informations
+    title = models.CharField(_("Title"), max_length=50, blank=True, null=True)
+    image = models.ImageField(_("Image"), upload_to='news_images')
+
+    # moderations
+    is_published = models.BooleanField('is published', default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Xəbər Şəkili'
+        verbose_name_plural = 'Xəbərlərin Şəkilləri'
+        ordering = ('-created_at',)
