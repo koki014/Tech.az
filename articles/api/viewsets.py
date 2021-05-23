@@ -103,7 +103,3 @@ class MixDataViewSets(FlatMultipleModelAPIView):
             {'queryset': Video.objects.all(), 'serializer_class': VideoSerializers, 'label': 'Videos'},
         ]
         return querylist
-    
-    # def mixing_datas(self, request, *args, **kwargs):
-    #     return self.get_querylist
-    
