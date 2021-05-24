@@ -2,12 +2,14 @@ from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
-from django import http
-
+from rest_framework import status
 from .serializers import *
 from ..models import News
 from comments.models import Comment
 from comments.api.serializers import *
+
+
+
 
 class NewsViewSets(ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny,]
@@ -36,7 +38,6 @@ class NewsViewSets(ReadOnlyModelViewSet):
     
     @action(detail=False, methods=['GET', 'POST'])
     def comments(self, request, pk):
-        print(pk, 'idler')
         news = News.objects.filter(pk=pk).first()
         self.serializer_class = CommentSerializers
         queryset = Comment.objects.filter(news=news).first()

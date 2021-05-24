@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from main.models import Tag
@@ -48,11 +49,14 @@ class News(models.Model):
             self.slug = f'{slugify(self.title)}-{self.id}'
         super(News, self).save(*args, **kwargs)
 
+    @property
+    def image_url(self):
+        return "{0}{1}".format(settings.SITE_ADDRESS, self.image.url)
 
 class NewsImage(models.Model):
 
     # relation's
-    news = models.ForeignKey("news.News", related_name='news_iamges', on_delete=models.CASCADE, blank=True, null=True)
+    news = models.ForeignKey(News, related_name='news_images', on_delete=models.CASCADE, blank=True, null=True)
 
     # informations
     title = models.CharField(_("Title"), max_length=50, blank=True, null=True)
@@ -67,3 +71,7 @@ class NewsImage(models.Model):
         verbose_name = 'Xəbər Şəkili'
         verbose_name_plural = 'Xəbərlərin Şəkilləri'
         ordering = ('-created_at',)
+
+    @property
+    def image_url(self):
+        return "{0}{1}".format(settings.SITE_ADDRESS, self.image.url)
