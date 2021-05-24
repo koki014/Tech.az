@@ -64,31 +64,31 @@ class NewsSerializers(serializers.ModelSerializer):
     #         return request.build_absolute_uri(obj.slug)
     #     return settings.SITE_ADDRESS + '/api/news/' + obj.slug +'/'
 
-class NewsCreateSerializer(serializers.ModelSerializer):
-    # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
+# class NewsCreateSerializer(serializers.ModelSerializer):
+#     # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
     
-    owner = UserSerializer(read_only=True)
-    class Meta:
-        model = News
-        extra_kwargs = {'tag': {'required': False}}
+#     owner = UserSerializer(read_only=True)
+#     class Meta:
+#         model = News
+#         extra_kwargs = {'tag': {'required': False}}
 
-        fields = [
-            'id',
-            'owner',
-            'tag',
-            'title',
-            'short_desc',
-            'content',
-            'image',
-            'cover_image',
-            'video_link',
-            'views',
-            'created_at'
-        ]
+#         fields = [
+#             'id',
+#             'owner',
+#             'tag',
+#             'title',
+#             'short_desc',
+#             'content',
+#             'image',
+#             'cover_image',
+#             'video_link',
+#             'views',
+#             'created_at'
+#         ]
 
     
 
-    def validate(self, data):
-        request = self.context.get('request')
-        data['owner'] = request.user
-        return super().validate(data)
+#     def validate(self, data):
+#         request = self.context.get('request')
+#         data['owner'] = request.user
+#         return super().validate(data)
