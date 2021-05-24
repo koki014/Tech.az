@@ -15,8 +15,8 @@ class NewsSerializers(serializers.ModelSerializer):
     file_abs_url = serializers.SerializerMethodField()
     tag = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
-    owner = UserSerializer(read_only=True)
-    # owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    # owner = UserSerializer(read_only=True)
+    owner = serializers.StringRelatedField()
     comments = serializers.SerializerMethodField()
     # absolute_url = serializers.SerializerMethodField()
 
@@ -47,8 +47,8 @@ class NewsSerializers(serializers.ModelSerializer):
             image = None
         return image
     
-    def get_owner(self, obj):
-        return obj.owner.username
+    # def get_owner(self, obj):
+    #     return obj.owner.username
 
     def get_comments(self, obj):
         news_comments = obj.news_comments
