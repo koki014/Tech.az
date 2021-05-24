@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 class NewsSerializers(serializers.ModelSerializer):
-    file_abs_url = serializers.SerializerMethodField()
+    # file_abs_url = serializers.SerializerMethodField()
     tag = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     # owner = UserSerializer(read_only=True)
@@ -58,11 +58,11 @@ class NewsSerializers(serializers.ModelSerializer):
         tags = obj.tag
         return TagSerializer(tags, many=True).data
     
-    def get_file_abs_url(self, obj):
-        request = self.context.get('request')
-        if request:
-            return request.build_absolute_uri(obj.slug)
-        return settings.SITE_ADDRESS + '/api/news/' + obj.slug +'/'
+    # def get_file_abs_url(self, obj):
+    #     request = self.context.get('request')
+    #     if request:
+    #         return request.build_absolute_uri(obj.slug)
+    #     return settings.SITE_ADDRESS + '/api/news/' + obj.slug +'/'
 
 class NewsCreateSerializer(serializers.ModelSerializer):
     # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
