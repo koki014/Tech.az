@@ -2,6 +2,16 @@ from django.contrib import admin
 from .models import News
 # Register your models here.
 
+
+# class Inline(admin.TabularInline):
+#     '''Tabular Inline View for '''
+
+#     model = 
+#     min_num = 3
+#     max_num = 20
+#     extra = 1
+#     raw_id_fields = (,)
+
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
     list_display = ("id", "title", 'owner', )
