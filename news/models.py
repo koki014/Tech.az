@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -23,6 +24,7 @@ class News(models.Model):
     video_link = models.URLField(max_length=300, blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField('Slug', max_length=110, editable=False, default='', unique = True)
+    file_abs_url = models.URLField(_("abs url"), default='', max_length=200)
 
     # moderations
     is_published = models.BooleanField('is published', default=True)
@@ -41,6 +43,7 @@ class News(models.Model):
 
     def save(self, *args, **kwargs):
         super(News, self).save(*args, **kwargs)
+        self.file_abs_url = f'{settings.SITE_ADDRESS}/news/{self.slug}/'
         news = News.objects.filter(title=self.title).first()
         if not news: 
             self.slug = slugify(f'{self.title}')

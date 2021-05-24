@@ -4,6 +4,8 @@ from ..models import News, NewsImage
 from account.api.serializers import UserSerializer
 from main.api.serializers import TagSerializer
 from django.contrib.auth import get_user_model
+from django.conf import settings
+
 from .serializers import *
 from comments.api.serializers import *
 
@@ -12,22 +14,12 @@ User = get_user_model()
 
 
 
-class NewsImageSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = NewsImage
-        fields = [
-            'id',
-            'title',
-            'image_url',
-            'is_published',
-            'created_at',
-        ]
-
-
 class NewsSerializers(serializers.ModelSerializer):
+    # file_abs_url = serializers.SerializerMethodField()
     tag = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
-    owner = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    # owner = UserSerializer(read_only=True)
+    owner = serializers.StringRelatedField()
     comments = serializers.SerializerMethodField()
     news_image = serializers.SerializerMethodField(read_only=True, required=False)
     # absolute_url = serializers.SerializerMethodField()
@@ -47,7 +39,7 @@ class NewsSerializers(serializers.ModelSerializer):
             'video_link',
             'comments',
             'views',
-            'slug',
+            'file_abs_url',
             'created_at',
         ]
 
@@ -63,8 +55,8 @@ class NewsSerializers(serializers.ModelSerializer):
             image = None
         return image
     
-    def get_owner(self, obj):
-        return obj.owner.username
+    # def get_owner(self, obj):
+    #     return obj.owner.username
 
     def get_comments(self, obj):
         news_comments = obj.news_comments
@@ -73,9 +65,12 @@ class NewsSerializers(serializers.ModelSerializer):
     def get_tag(self, obj):
         tags = obj.tag
         return TagSerializer(tags, many=True).data
-
-        
-
+    
+    # def get_file_abs_url(self, obj):
+    #     request = self.context.get('request')
+    #     if request:
+    #         return request.build_absolute_uri(obj.slug)
+    #     return settings.SITE_ADDRESS + '/api/news/' + obj.slug +'/'
 
 class NewsCreateSerializer(serializers.ModelSerializer):
     # owner = serializers.PrimaryKeyRelatedField(queryset= User.objects.all() if User.objects.all() else {}, required=False)
