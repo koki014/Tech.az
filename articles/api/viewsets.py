@@ -36,11 +36,17 @@ class ArticleViewSets(ModelViewSet):
             queryset = queryset.filter(owner=owner)
         return queryset
 
-    def create(self, request):
-        serializer = ArticleCreateSerializers(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True) # check all fields is valid before attempting to save
-        serializer.save(owner=request.user)
-        return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return ArticleCreateSerializers
+        return super().get_serializer_class()
+
+
+    # def create(self, request):
+    #     serializer = ArticleCreateSerializers(data=request.data, context={'request': request})
+    #     serializer.is_valid(raise_exception=True) # check all fields is valid before attempting to save
+    #     serializer.save(owner=request.user)
+    #     return Response(serializer.data)
 
 
     @action(detail=False, methods=['POST','GET'])

@@ -1,8 +1,10 @@
 from rest_framework import serializers
-from ..models import Articles
+from ..models import *
 
 from account.api.serializers import UserSerializer
 from django.contrib.auth import get_user_model
+from drf_extra_fields.fields import Base64ImageField
+
 
 from main.api.serializers import TagSerializer
 from main.models import Tag
@@ -13,26 +15,36 @@ from videos.api.serializers import *
 User = get_user_model()
 
 
-# articles_detail_url = serializers.HyperlinkedIdentityField(
-#     view_name='app_name:view_name',
-#     lookup_field='slug'
-# )
+
+
+
+class ArticleImageSerializer(serializers.ModelSerializer):
+    model = ArticleImage
+    image = Base64ImageField()
+    fields = [
+        'id',
+        'image',
+        'created_at',
+    ]
+
 
 class ArticleSerializers(serializers.ModelSerializer):
-    owner = UserSerializer(read_only=True)
+    # owner = UserSerializer(read_only=True)
     owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
 
     class Meta:
         model = Articles
         fields  = [
             'id',
+            'owner',
             'title',
             'short_desc',
             'content',
+            'images',
             'views',
-            'owner',
             'tag',
             'slug',
             'created_at',
@@ -44,6 +56,10 @@ class ArticleSerializers(serializers.ModelSerializer):
         tags = obj.tag
         return TagSerializer(tags, many=True).data
 
+    def get_images(self, obj):
+        data = obj.articles_images
+        return ArticleImageSerializer(data, many=True).data
+
     def get_owner(self, obj):
         return obj.owner.username
 
@@ -53,7 +69,8 @@ class ArticleSerializers(serializers.ModelSerializer):
         return CommentSerializers(comment, many=True).data
 
 class ArticleCreateSerializers(serializers.ModelSerializer):
-    owner = UserSerializer(read_only=True)
+    owner=serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+    articles_images = ArticleImageSerializer(many=True)
 
     class Meta:
         model = Articles
@@ -66,12 +83,32 @@ class ArticleCreateSerializers(serializers.ModelSerializer):
             'views',
             'owner',
             'tag',
-            
+            'articles_images',
         ]
 
     def validate(self, data):
         request = self.context.get('request')
+        print('herer')
         data['owner'] = request.user
+        print(request.user)
         return super().validate(data)
     
+
+    def create(self, validated_data):
+        print(validated_data)
+        images = validated_data.pop('articles_images')
+        print(images, 'sekil')
+        print(validated_data)
+        instance = super().create(validated_data)
+        
+        for image in images:
+            print(image, 'imagess')
+            image_serializer = ArticleImageSerializer(**image)
+            image_serializer.is_valid(raise_exception=True)
+            image_serializer.save(articles=instance)
+        return instance
+    
+
+
+
 
