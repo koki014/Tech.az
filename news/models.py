@@ -47,7 +47,7 @@ class News(models.Model):
         else:
             print('girmedi')
             self.slug = f'{slugify(self.title)}-{self.id}'
-        self.file_abs_url = f'{settings.SITE_ADDRESS}/news/{self.slug}/'
+        self.file_abs_url = f'{settings.SITE_ADDRESS}/api/news/{self.slug}/'
         super(News, self).save(*args, **kwargs)
 
 

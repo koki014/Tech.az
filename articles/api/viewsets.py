@@ -29,6 +29,10 @@ class ArticleViewSets(ModelViewSet):
     serializer_class = ArticleSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = LimitPagination
+    # lookup_field = 'slug'
+    # extra_kwargs = {
+    #     'url': {'lookup_field': 'slug'}
+    }
 
     def get_queryset(self):
         queryset = super().get_queryset()

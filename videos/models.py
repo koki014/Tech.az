@@ -47,7 +47,7 @@ class Video(models.Model):
         else:
             super().save(*args, **kwargs)
             self.slug = f'{slugify(self.title)}-{self.id}'
-        self.file_abs_url = f'{settings.SITE_ADDRESS}/videos/{self.slug}/'
+        self.file_abs_url = f'{settings.SITE_ADDRESS}/api/videos/{self.slug}/'
         super(Video, self).save(*args, **kwargs)
 
 
