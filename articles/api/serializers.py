@@ -19,27 +19,36 @@ User = get_user_model()
 
 
 class ArticleImageSerializer(serializers.ModelSerializer):
-    model = ArticleImage
     image = Base64ImageField()
-    fields = [
-        'id',
-        'image',
-        'created_at',
-    ]
+    class Meta:
+        model = ArticleImage
+        fields = [
+            'id',
+            'image',
+            'created_at',
+        ]
+    def create(self, validated_data):
+        image=validated_data.pop('image')
+        # data=validated_data.pop('data')
+        return ArticleImage.objects.create(image=image)
 
-
-class ArticleSerializers(serializers.ModelSerializer):
+class ArticleSerializers(serializers.HyperlinkedModelSerializer):
     # owner = UserSerializer(read_only=True)
     owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
+    url = serializers.HyperlinkedIdentityField(
+        view_name='articles-detail',
+        lookup_field='slug'
+    )
 
     class Meta:
         model = Articles
         fields  = [
             'id',
             'owner',
+            'url',
             'title',
             'short_desc',
             'content',

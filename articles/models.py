@@ -9,6 +9,8 @@ User = get_user_model()
 
 # Create your models here.
 
+
+
 class Articles(models.Model):
     #realtion
     owner =  models.ForeignKey(User, on_delete=models.CASCADE)

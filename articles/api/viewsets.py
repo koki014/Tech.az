@@ -28,6 +28,7 @@ class ArticleViewSets(ModelViewSet):
     queryset = Articles.objects.all()
     serializer_class = ArticleSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    lookup_field = 'slug'
 
     def get_queryset(self):
         queryset = super().get_queryset()
