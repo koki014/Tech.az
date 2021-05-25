@@ -1,3 +1,4 @@
+from django.db import models
 from rest_framework import serializers
 from account.api.serializers import UserSerializer
 from main.api.serializers import TagSerializer
@@ -5,13 +6,24 @@ from comments.api.serializers import CommentSerializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-from ..models import Video
+from ..models import Video, VideosImage
+
+
+class VideoImageSerialziers(serializers.ModelSerializer):
+    class Meta:
+        model = VideosImage
+        fields = (
+            'title',
+            'image'
+        )
+
 
 class VideoSerializers(serializers.ModelSerializer):
     # owner = UserSerializer(read_only=True)
     owner = serializers.StringRelatedField()
     tag = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
+    videos_images = VideoImageSerialziers(many=True)
     
 
     class Meta:
@@ -22,7 +34,7 @@ class VideoSerializers(serializers.ModelSerializer):
             'title',
             'short_desc',
             'content',
-            'image',
+            'videos_images',
             'cover_image',
             'video_link',
             'views',

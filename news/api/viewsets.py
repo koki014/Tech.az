@@ -6,6 +6,7 @@ from rest_framework import status
 
 from .serializers import *
 from ..models import News
+from .paginations import LimitPagination
 
 from comments.models import Comment
 from comments.api.serializers import *
@@ -18,6 +19,7 @@ class NewsViewSets(ReadOnlyModelViewSet):
     extra_kwargs = {
         'url': {'lookup_field': 'slug'}
     }
+    pagination_class = LimitPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -3,7 +3,7 @@ from rest_framework import permissions
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-
+from .paginations import LimitPagination
 from .serializers import *
 from ..models import *
 from comments.api.serializers import *
@@ -15,6 +15,7 @@ class VideoViewSet(ReadOnlyModelViewSet):
     queryset = Video.objects.filter(is_published=True)    
     serializer_class = VideoSerializers
     lookup_field = 'slug'
+    pagination_class = LimitPagination
     
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -18,7 +18,6 @@ class News(models.Model):
     title = models.CharField("Basliq", max_length=256,)
     short_desc = models.CharField("Qısa Məzmun", max_length=256)
     content = models.TextField('Məzmun')
-    image = models.ImageField("Şəkil", upload_to='news_images', null=True, blank=True)
     cover_image = models.ImageField("Qapak örtüyü", upload_to='cover_images', null=True, blank=True)
     video_link = models.URLField(max_length=300, blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
@@ -55,7 +54,7 @@ class News(models.Model):
 class NewsImage(models.Model):
 
     # relation's
-    news = models.ForeignKey("news.News", related_name='news_iamges', on_delete=models.CASCADE, blank=True, null=True)
+    news = models.ForeignKey("news.News", related_name='news_images', on_delete=models.CASCADE, blank=True, null=True)
 
     # informations
     title = models.CharField(_("Title"), max_length=50, blank=True, null=True)

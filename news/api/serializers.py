@@ -1,5 +1,7 @@
+from django.db import models
+from django.db.models import fields
 from rest_framework import serializers
-from ..models import News
+from ..models import News, NewsImage
 from account.api.serializers import UserSerializer
 from main.api.serializers import TagSerializer
 from django.contrib.auth import get_user_model
@@ -11,10 +13,19 @@ User = get_user_model()
 
 
 
+class NewImageSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = NewsImage
+        fields = (
+            'title',
+            'image'
+            )
+
+
 class NewsSerializers(serializers.ModelSerializer):
     # file_abs_url = serializers.SerializerMethodField()
     tag = serializers.SerializerMethodField()
-    image = serializers.SerializerMethodField()
+    news_images = NewImageSerializers(many=True)
     # owner = UserSerializer(read_only=True)
     owner = serializers.StringRelatedField()
     comments = serializers.SerializerMethodField()
@@ -29,7 +40,7 @@ class NewsSerializers(serializers.ModelSerializer):
             'title',
             'short_desc',
             'content',
-            'image',
+            'news_images',
             'cover_image',
             'video_link',
             'comments',
@@ -92,3 +103,5 @@ class NewsSerializers(serializers.ModelSerializer):
 #         request = self.context.get('request')
 #         data['owner'] = request.user
 #         return super().validate(data)
+
+

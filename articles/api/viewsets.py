@@ -28,6 +28,7 @@ class ArticleViewSets(ModelViewSet):
     queryset = Articles.objects.all()
     serializer_class = ArticleSerializers
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = LimitPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
