@@ -49,14 +49,14 @@ urlpatterns = [
 
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     path('api-doc/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('user/', include('account.urls', namespace='account')),
-    path('', include('articles.urls', namespace='articles')),
-    path('', include('news.urls', namespace='news')),
-    path('', include('comments.urls', namespace='comments')),
-    path('', include('videos.urls', namespace='video')),
+    path('api/', include('articles.urls', namespace='articles')),
+    path('api/', include('news.urls', namespace='news')),
+    path('api/', include('comments.urls', namespace='comments')),
+    path('api/', include('videos.urls', namespace='video')),
 
 
 

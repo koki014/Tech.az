@@ -3,7 +3,6 @@ from ..models import *
 
 from account.api.serializers import UserSerializer
 from django.contrib.auth import get_user_model
-from drf_extra_fields.fields import Base64ImageField
 
 
 from main.api.serializers import TagSerializer
