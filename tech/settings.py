@@ -245,5 +245,5 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-SITE_ADDRESS = os.environ.get('VIRTUAL_HOST').split(',')[0] \
-    if f'http://{os.environ.get("VIRTUAL_HOST")}' else 'http://localhost:8000'
+SITE_ADDRESS = f"http://{os.environ.get('VIRTUAL_HOST').split(',')[0]}" \
+    if os.environ.get('VIRTUAL_HOST') else 'http://localhost:8000'
