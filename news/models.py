@@ -39,16 +39,16 @@ class News(models.Model):
         self.save()
         return True
 
-    def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
         
-        news = News.objects.filter(title=self.title).first()
-        if not news: 
-            self.slug = slugify(f'{self.title}')
-        else:
-            super(News, self).save(*args, **kwargs)
-            self.slug = f'{slugify(self.title)}-{self.id}'
-        self.file_abs_url = f'{settings.SITE_ADDRESS}/api/news/{self.slug}/'
-        super(News, self).save(*args, **kwargs)
+    #     news = News.objects.filter(title=self.title).first()
+    #     if not news: 
+    #         self.slug = slugify(f'{self.title}')
+    #     else:
+    #         super(News, self).save(*args, **kwargs)
+    #         self.slug = f'{slugify(self.title)}-{self.id}'
+    #     self.file_abs_url = f'{settings.SITE_ADDRESS}/api/news/{self.slug}/'
+    #     super(News, self).save(*args, **kwargs)
 
 
 class NewsImage(models.Model):

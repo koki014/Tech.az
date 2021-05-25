@@ -39,16 +39,16 @@ class Video(models.Model):
         self.save()
         return True
 
-    def save(self, *args, **kwargs):
+    # def save(self, *args, **kwargs):
 
-        videos = Video.objects.filter(title=self.title).first()
-        if not videos: 
-            self.slug = slugify(f'{self.title}')
-        else:
-            super().save(*args, **kwargs)
-            self.slug = f'{slugify(self.title)}-{self.id}'
-        self.file_abs_url = f'{settings.SITE_ADDRESS}/api/videos/{self.slug}/'
-        super(Video, self).save(*args, **kwargs)
+    #     videos = Video.objects.filter(title=self.title).first()
+    #     if not videos: 
+    #         self.slug = slugify(f'{self.title}')
+    #     else:
+    #         super().save(*args, **kwargs)
+    #         self.slug = f'{slugify(self.title)}-{self.id}'
+    #     self.file_abs_url = f'{settings.SITE_ADDRESS}/api/videos/{self.slug}/'
+    #     super(Video, self).save(*args, **kwargs)
 
 
 
