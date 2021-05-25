@@ -38,7 +38,7 @@ class Articles(models.Model):
         return True
 
     def save(self, *args, **kwargs):
-        # super(Articles, self).save(*args, **kwargs)
+        super(Articles, self).save(*args, **kwargs)
         articles = Articles.objects.filter(title=self.title).first()
         print(len(self.slug), 'salamnn')
         if not articles: 

@@ -28,7 +28,7 @@ class VideoSerializers(serializers.ModelSerializer):
             'views',
             'comments',
             'created_at',
-            'slug'
+            'file_abs_url'
             ]
 
         extra_kwargs = {
