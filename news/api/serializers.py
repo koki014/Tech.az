@@ -17,7 +17,6 @@ class NewImageSerializers(serializers.ModelSerializer):
     class Meta:
         model = NewsImage
         fields = (
-            'title',
             'image'
             )
 

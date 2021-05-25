@@ -14,7 +14,7 @@ from .models import News, NewsImage
 
 @admin.register(NewsImage)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ("title", "image", 'is_published')
+    list_display = ("image", 'is_published')
 
 class ImageInline(admin.TabularInline):
     model = NewsImage

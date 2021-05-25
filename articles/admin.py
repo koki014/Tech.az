@@ -10,7 +10,7 @@ class ArticlesAdmin(admin.ModelAdmin):
     list_filter = ("title", "tag")
     search_fields = ('title',)
     readonly_fields = ('slug',)
-
+    save_on_top = True
     readonly_fields = (
         'created_at',
     )

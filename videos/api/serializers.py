@@ -13,7 +13,6 @@ class VideoImageSerialziers(serializers.ModelSerializer):
     class Meta:
         model = VideosImage
         fields = (
-            'title',
             'image'
         )
 

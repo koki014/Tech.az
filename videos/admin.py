@@ -4,7 +4,7 @@ from .models import Video, VideosImage
 
 @admin.register(VideosImage)
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ("title", "image", 'is_published')
+    list_display = ("image", 'is_published')
 
 class ImageInline(admin.TabularInline):
     model = VideosImage

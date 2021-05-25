@@ -41,15 +41,15 @@ class Articles(models.Model):
         self.save()
         return True
 
-    def save(self, *args, **kwargs):
-        articles = Articles.objects.filter(title=self.title).first()
-        if not articles: 
-            self.slug = slugify(f'{self.title}')
-        else:
-            super(Articles, self).save(*args, **kwargs)
-            self.slug = f'{slugify(self.title)}-{self.id}'
-        self.file_abs_url = f'{settings.SITE_ADDRESS}/articles/{self.slug}/'
-        super(Articles, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     articles = Articles.objects.filter(title=self.title).first()
+    #     if not articles:
+    #         self.slug = slugify(f'{self.title}')
+    #     else:
+    #         super(Articles, self).save(*args, **kwargs)
+    #         self.slug = f'{slugify(self.title)}-{self.id}'
+    #     self.file_abs_url = f'{settings.SITE_ADDRESS}/articles/{self.slug}/'
+    #     super(Articles, self).save(*args, **kwargs)
 
 
 # class ArticleImage(models.Model):

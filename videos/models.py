@@ -58,7 +58,6 @@ class VideosImage(models.Model):
     videos = models.ForeignKey("videos.Video", related_name='videos_images', on_delete=models.CASCADE, blank=True, null=True)
 
     # informations
-    title = models.CharField(_("Title"), max_length=50, blank=True, null=True)
     image = models.ImageField(_("Image"), upload_to='videos_images')
 
     # moderations

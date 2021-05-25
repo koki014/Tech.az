@@ -57,7 +57,6 @@ class NewsImage(models.Model):
     news = models.ForeignKey("news.News", related_name='news_images', on_delete=models.CASCADE, blank=True, null=True)
 
     # informations
-    title = models.CharField(_("Title"), max_length=50, blank=True, null=True)
     image = models.ImageField(_("Image"), upload_to='news_images')
 
     # moderations
