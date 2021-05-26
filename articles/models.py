@@ -13,7 +13,7 @@ User = get_user_model()
 
 class Articles(models.Model):
     #realtion
-    owner =  models.ForeignKey(User, on_delete=models.CASCADE)
+    owner =  models.ForeignKey(User, on_delete=models.CASCADE, related_name='articles')
     tag = models.ManyToManyField(Tag, related_name='articles')
 
     #information

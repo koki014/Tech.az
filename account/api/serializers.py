@@ -4,11 +4,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+
 class UserSerializer(serializers.ModelSerializer):
+    # from articles.api.serializers import ArticleSerializers
     token = serializers.SerializerMethodField()
+    articles = serializers.SerializerMethodField()
     class Meta:
         model = User
         fields = [
+            'id',
             'first_name',
             'last_name',
             'email',
@@ -17,7 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
             'position',
             'image',
             'birthday',
-            'token'
+            'token',
+            'articles'
         ]
         extra_kwargs = {
             'first_name': {'required': True},
@@ -34,6 +39,10 @@ class UserSerializer(serializers.ModelSerializer):
         token, created = Token.objects.get_or_create(user=user)
         return token.key
 
+    def get_articles(self, obj):
+        from articles.api.serializers import ArticleSerializers
+        articles_list = obj.articles.all()
+        return ArticleSerializers(articles_list, many=True).data
 
 class UserSerializerCreate(serializers.ModelSerializer):
     password = serializers.CharField(

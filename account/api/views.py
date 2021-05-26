@@ -1,11 +1,14 @@
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from .serializers import UserSerializer, UserSerializerCreate, ProfileUpdateSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework import permissions, status, generics
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework import viewsets
+from articles.api.serializers import ArticleSerializers
 # from accounts.utils import CustomSwaggerAutoSchema
 
 
@@ -34,6 +37,7 @@ class ProfileAPIView(generics.GenericAPIView):
     def get(self, request):
         return Response(data=self.serializer_class(request.user, context={'request': request}).data)
 
+    
     @swagger_auto_schema(request_body=update_serializer_class, responses={200: UserSerializer})
     def put(self, request):
         data = request.data
@@ -60,3 +64,19 @@ class RegisterAPIView(CreateAPIView):
     @swagger_auto_schema(request_body=UserSerializerCreate)
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+
+class UserReadOnlyModelViewSets(viewsets.ReadOnlyModelViewSet):
+    http_method_names = ['get']
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(status=True)
+    # permission_classes = (permissions.IsAuthenticated,)
+
+    def get_users_news(self, request, user_id=None, *args, **kwargs):
+        queryset = User.objects.all()
+        user = get_object_or_404(queryset, pk=user_id)
+        articles = user.articles.all()
+        serializer =  ArticleSerializers(articles, many=True, context={'request': request})
+        if articles:
+            return Response(serializer.data)
+        return Response({'message': 'Not founded'})
