@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -55,7 +56,7 @@ class UserSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name', 'education', 'position',
-                'image', 'created_at', 'updated_at']
+                'image', 'created_at', 'updated_at',]
         extra_kwargs = {
             'password': {'write_only': True},
             'first_name': {'required': True},
@@ -103,4 +104,4 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'education', 'position', 'image']
+        fields = ['username', 'email', 'first_name', 'last_name', 'education', 'position', 'image',]

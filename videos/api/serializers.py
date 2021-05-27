@@ -13,7 +13,7 @@ class VideoImageSerialziers(serializers.ModelSerializer):
     class Meta:
         model = VideosImage
         fields = (
-            'image'
+            'image',
         )
 
 
@@ -39,7 +39,7 @@ class VideoSerializers(serializers.ModelSerializer):
             'views',
             'comments',
             'created_at',
-            'file_abs_url'
+            'file_abs_url',
             ]
 
         extra_kwargs = {
