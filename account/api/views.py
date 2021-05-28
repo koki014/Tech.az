@@ -25,7 +25,7 @@ class LoginAPI(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         user_serializer = self.custom_serializer_class(user, context={'request': request})
-        return Response(user_serializer.data)
+        return Response(serializer.data)
 
 class ProfileAPIView(generics.GenericAPIView):
     serializer_class = UserSerializer
