@@ -1,10 +1,8 @@
 from rest_framework.generics import CreateAPIView
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-
 from .serializers import UserSerializer, UserSerializerCreate, ProfileUpdateSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import permissions, status, generics
 from drf_yasg.utils import swagger_auto_schema
@@ -26,10 +24,9 @@ class LoginAPI(ObtainAuthToken):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'data': self.custom_serializer_class(user).data
-        })
+        user_serializer = self.custom_serializer_class(user, context={'request': request})
+        return Response(user_serializer.data)
+
 class ProfileAPIView(generics.GenericAPIView):
     serializer_class = UserSerializer
     update_serializer_class = ProfileUpdateSerializer

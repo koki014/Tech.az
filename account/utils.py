@@ -51,3 +51,6 @@ class CustomSwaggerAutoSchema(SwaggerAutoSchema):
             serializer_parameters = self.serializer_to_parameters(serializer, in_=openapi.IN_FORM)
 
         return serializer_parameters
+
+
+
