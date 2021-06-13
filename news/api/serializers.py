@@ -44,6 +44,7 @@ class NewsSerializers(serializers.ModelSerializer):
             'video_link',
             'comments',
             'views',
+            'slug',
             'file_abs_url',
             'created_at',
         ]

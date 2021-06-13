@@ -48,6 +48,7 @@ class ArticleSerializers(serializers.ModelSerializer):
             'views',
             'file_abs_url',
             'created_at',
+            'slug',
             'comments',
         ]
         extra_kwargs = {'tag': {'required': False}}
