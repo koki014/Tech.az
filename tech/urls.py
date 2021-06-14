@@ -57,6 +57,7 @@ urlpatterns = [
     path('api/', include('news.urls', namespace='news')),
     path('api/', include('comments.urls', namespace='comments')),
     path('api/', include('videos.urls', namespace='video')),
+    path('api/', include('main.urls'))
 
 
 

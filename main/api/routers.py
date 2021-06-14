@@ -4,3 +4,5 @@ from .views import *
 router = DefaultRouter()
 
 router.register(r'tags', TagViewsSet)
+
+

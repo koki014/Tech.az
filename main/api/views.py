@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from main.api.serializers import *
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
-from main.models import JoinSerializer, TagSerializer
+from .serializers import JoinSerializer, TagSerializer
 
 
 

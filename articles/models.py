@@ -22,7 +22,7 @@ class Articles(models.Model):
     content = models.TextField('Mezmun')
     image = models.ImageField("Şəkil", upload_to='article_images', null=True, blank=True)
     cover_image = models.ImageField("Qapak örtüyü", upload_to='aritcle_cover_images', null=True, blank=True)
-    views = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(default=3, blank=True, null=True)
     slug = models.SlugField('Slug', max_length=110, unique = True)
     file_abs_url = models.URLField(_("abs url"), default='', max_length=200)
 
