@@ -1,10 +1,10 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from main.api.serializers import *
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
-from main.models import *
+from main.models import JoinSerializer, TagSerializer
 
 
 
@@ -25,6 +25,6 @@ class JoinAPIView(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
 
 
-class TagViewsSet(ModelViewSet):
-    serializer_class = TagSerialler
+class TagViewsSet(ReadOnlyModelViewSet):
+    serializer_class = TagSerializer
     queryset = Tag.objects.filter(is_published=True)
