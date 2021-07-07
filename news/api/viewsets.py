@@ -1,5 +1,6 @@
 from rest_framework import permissions
 from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -27,6 +28,14 @@ class NewsViewSets(ReadOnlyModelViewSet):
         if owner:
             queryset = queryset.filter(owner=owner)
         return queryset
+    
+
+    def retrieve(self, request, slug=None):
+        news = get_object_or_404(News,slug=slug)
+        news.add_view_count()
+        serializer = NewsSerializers(news)
+        return Response(serializer.data)
+
 
     # def create(self, request):
     #     serializer = NewsCreateSerializer(data=request.data, context={'request': request})

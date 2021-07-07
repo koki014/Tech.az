@@ -45,7 +45,12 @@ class ArticleViewSets(ModelViewSet):
         if self.action == 'create':
             return ArticleCreateSerializers
         return super().get_serializer_class()
-
+    
+    def retrieve(self, request, slug=None):
+        article = get_object_or_404(Articles,slug=slug)
+        article.add_view_count()
+        serializer = ArticleSerializers(article)
+        return Response(serializer.data)
 
     # def create(self, request):
     #     serializer = ArticleCreateSerializers(data=request.data, context={'request': request})

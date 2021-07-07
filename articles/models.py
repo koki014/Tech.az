@@ -23,7 +23,7 @@ class Articles(models.Model):
     image = models.ImageField("Şəkil", upload_to='article_images', null=True, blank=True)
     cover_image = models.ImageField("Qapak örtüyü", upload_to='aritcle_cover_images', null=True, blank=True)
     views = models.PositiveIntegerField(default=3, blank=True, null=True)
-    slug = models.SlugField('Slug', max_length=110, unique = True)
+    slug = models.SlugField('Slug', max_length=110, unique=True)
     file_abs_url = models.URLField(_("abs url"), default='', max_length=200)
 
     # moderations
@@ -42,14 +42,10 @@ class Articles(models.Model):
         return True
 
     # def save(self, *args, **kwargs):
-    #     articles = Articles.objects.filter(title=self.title).first()
-    #     if not articles:
-    #         self.slug = slugify(f'{self.title}')
-    #     else:
-    #         super(Articles, self).save(*args, **kwargs)
-    #         self.slug = f'{slugify(self.title)}-{self.id}'
-    #     self.file_abs_url = f'{settings.SITE_ADDRESS}/articles/{self.slug}/'
+    #     super(Articles, self).save(*args, **kwargs)    
+    #     self.slug = f'{slugify(self.title)}-{self.id}'
     #     super(Articles, self).save(*args, **kwargs)
+    
 
 
 # class ArticleImage(models.Model):

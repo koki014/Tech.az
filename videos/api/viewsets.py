@@ -2,6 +2,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import permissions
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from .paginations import LimitPagination
 from .serializers import *
@@ -23,6 +24,13 @@ class VideoViewSet(ReadOnlyModelViewSet):
         if owner:
             queryset = queryset.filter(owner=owner)
         return queryset
+    
+
+    def retrieve(self, request, slug=None):
+        videos = get_object_or_404(Video,slug=slug)
+        videos.add_view_count()
+        serializer = VideoSerializers(videos)
+        return Response(serializer.data)
 
     # def create(self, request):
     #     serializer = VideoCreateSerializers(data=request.data, context={'request': request})
