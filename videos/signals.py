@@ -10,5 +10,5 @@ from tech.commons import slugify
 def create_product(sender, instance, created,  **kwargs):
     if created:
         instance.slug = f'{slugify(instance.title)}-{instance.id}'
-        instance.file_abs_url = f'{settings.SITE_ADDRESS}/api/articles/{instance.slug}/'
+        instance.file_abs_url = f'{settings.SITE_ADDRESS}/api/videos/{instance.slug}/'
         instance.save()

@@ -55,7 +55,7 @@ class UserSerializerCreate(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name', 'education', 'position',
+        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name', 'education', 'position', 'birthday',
                 'image', 'created_at', 'updated_at',]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -70,6 +70,7 @@ class UserSerializerCreate(serializers.ModelSerializer):
         last_name = validated_data.get('last_name', '')
         position = validated_data.get('position', '')
         education = validated_data.get('education', '')
+        birthday = validated_data.get('birthday', '')
         image = validated_data.get('image', '')
         username = validated_data.get('username', '')
         email = validated_data.get('email', '')
@@ -87,7 +88,7 @@ class UserSerializerCreate(serializers.ModelSerializer):
         if password != password2:
             raise serializers.ValidationError({'password': 'The two passwords differ.'})
         user = User(username=username, email=email, first_name=first_name, last_name=last_name,
-                    position=position, image=image, education=education)
+                    position=position, image=image, education=education, birthday=birthday)
         user.set_password(password)
         user.save()
         return user
@@ -104,4 +105,4 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'education', 'position', 'image',]
+        fields = ['username', 'email', 'first_name', 'last_name', 'education', 'position', 'image','birthday',]
